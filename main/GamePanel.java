@@ -95,7 +95,7 @@ public class GamePanel extends JPanel {
         g.drawImage(animations[2][aniIndex], (int) xDelta, (int) yDelta, 120, 130, null);
 
 
-    
+
 
     }
 
