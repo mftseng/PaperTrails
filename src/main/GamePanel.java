@@ -10,6 +10,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static utilz.Constants.PlayerConstants.*;
+import static utilz.Constants.Directions.*;
+
 
 public class GamePanel extends JPanel {
 
@@ -22,6 +25,9 @@ public class GamePanel extends JPanel {
     private BufferedImage img;
     private BufferedImage[][] animations;
     private int aniTick, aniIndex, aniSpeed = 17;
+    private int playerAction = IDLE1;
+    private int playerDir = -1;
+    private boolean moving = false;
 
 
     public GamePanel(){
@@ -77,26 +83,53 @@ public class GamePanel extends JPanel {
         repaint();
     }
 
-    public void changeYDelta(int value){
-        this.yDelta += value;
-
+    public void setDirection(int direction){
+        this.playerDir = direction;
+        moving = true;
     }
 
-    public void setRectPos(int x, int y){
-        this.xDelta = x;
-        this.yDelta = y;
-
+    public void setMoving(boolean moving){
+        this.moving = moving;
     }
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
+        setAnimation();
+        updatePos();
+
         updateAnimationTick();
-        g.drawImage(animations[2][aniIndex], (int) xDelta, (int) yDelta, 120, 130, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) xDelta, (int) yDelta, 120, 130, null);
 
 
 
 
+    }
+
+    private void updatePos() {
+        if(moving){
+            switch(playerDir){
+                case LEFT:
+                    xDelta -= 5;
+                    break;
+                case UP:
+                    yDelta -=5;
+                    break;
+                case RIGHT:
+                    xDelta += 5;
+                    break;
+                case DOWN:
+                    yDelta += 5;
+                    break;
+            }
+        }
+    }
+
+    private void setAnimation() {
+        if(moving)
+            playerAction = RUNNING1;
+        else
+            playerAction = IDLE1;
     }
 
     private void updateAnimationTick() {
@@ -104,7 +137,7 @@ public class GamePanel extends JPanel {
         if(aniTick >= aniSpeed){
             aniTick = 0;
             aniIndex++;
-            if (aniIndex >= 6){
+            if (aniIndex >= GetSpriteAmount(playerAction)){
                 aniIndex = 0;
             }
         }
