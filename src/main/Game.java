@@ -1,11 +1,13 @@
 package main;
 
 import entities.Player;
+import levels.LevelManager;
 
 import java.awt.*;
 
 public class Game implements Runnable{
     public final static int TILES_DEFAULT_SIZE = 32;
+    private LevelManager levelManager;
     public final static float SCALE = 2f;
     public final static int TILES_IN_WIDTH = 26;
     public final static int TILES_IN_HEIGHT = 14;
@@ -44,7 +46,10 @@ public class Game implements Runnable{
     }
 
     public void render(Graphics g){
-        player.render(g);
+
+
+        levelManager.draw(g);
+    player.render(g);
     }
 
     @Override
