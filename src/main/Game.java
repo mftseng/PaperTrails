@@ -1,6 +1,8 @@
 package main;
 
-import entities.Player;
+import entities.Player1;
+import entities.Player2;
+import levels.LevelManager;
 
 import java.awt.*;
 
@@ -17,8 +19,9 @@ public class Game implements Runnable{
     private Thread gameThread;
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
-    private Player player;
-
+    private Player1 player1;
+    private Player2 player2;
+    private LevelManager levelManager;
 
     public Game(){
         initClasses();
@@ -31,7 +34,9 @@ public class Game implements Runnable{
     }
 
     private void initClasses() {
-        player = new Player(200,200);
+        player1 = new Player1(200f,200f);
+        player2 = new Player2(275f, 200f);
+        levelManager = new LevelManager(this);
     }
 
     private void startGameLoop(){
@@ -40,11 +45,16 @@ public class Game implements Runnable{
     }
 
     public void update(){
-        player.update();
+        player1.update();
+        player2.update();
+        levelManager.update();
     }
 
+
     public void render(Graphics g){
-        player.render(g);
+        levelManager.render(g);
+        player1.render(g);
+        player2.render(g);
     }
 
     @Override
@@ -91,12 +101,20 @@ public class Game implements Runnable{
     }
 
     public void windowFocusLost(){
-        player.resetDirBooleans();
+        player1.resetDirBooleans();
+        player2.resetDirBooleans();
 
     }
 
-    public Player getPlayer(){
-        return player;
+    public Player1 getPlayer1(){
+        return player1;
     }
+
+    public Player2 getPlayer2(){
+        return player2;
+    }
+
+
+
 }
 
