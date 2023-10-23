@@ -5,6 +5,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
 
 import main.Game;
 import utilz.LoadSave;
@@ -18,18 +19,10 @@ public class LevelManager {
     public LevelManager(Game game) {
         this.game = game;
         importOutsideSprites();
-        levelOne = new Level(LoadSave.GetLevelData());
+
     }
 
-    private void importOutsideSprites() {
-        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS);
-        levelSprite = new BufferedImage[48];
-        for (int j = 0; j < 4; j++)
-            for (int i = 0; i < 12; i++) {
-                int index = j * 12 + i;
-                levelSprite[index] = img.getSubimage(i * 32, j * 32, 32, 32);
-            }
-    }
+
 
 
 
@@ -39,7 +32,7 @@ public class LevelManager {
 //                int index = levelOne.getSpriteIndex(i, j);
 //                g.drawImage(levelSprite[index], Game.TILES_SIZE * i, Game.TILES_SIZE * j, Game.TILES_SIZE, Game.TILES_SIZE, null);
 //            }
-        g.drawLine(0, 0, 100, 100);
+//        g.drawLine(0, 0, 100, 100);
 
     }
 
@@ -48,4 +41,30 @@ public class LevelManager {
     }
 
 
+
+
+
+    public void render(Graphics g) {
+        g.drawImage(levelSprite[0],0,40,null);
+        g.drawImage(levelSprite[1],0,400,null);
+    }
+
+    public void drawLevelOne(){
+
+    }
+
+    private void importOutsideSprites() {
+        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS);
+
+        levelSprite = new BufferedImage[5];
+        levelSprite[0] = img.getSubimage(32,32,64,64);
+        levelSprite[1] = img.getSubimage(32,32,1000,10);
+
+    }
+
+
+
+
 }
+
+

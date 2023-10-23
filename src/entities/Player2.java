@@ -1,18 +1,18 @@
 package entities;
 
+import utilz.LoadSave;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static utilz.Constants.Directions.*;
-import static utilz.Constants.Directions.DOWN;
 import static utilz.Constants.PlayerConstants.*;
 
-public class Player extends Entity{
+public class Player2 extends Entity{
     private int aniTick, aniIndex, aniSpeed = 17;
-    private int playerAction = IDLE1;
+    private int playerAction = IDLE2;
     private boolean moving = false;
     private BufferedImage[][] animations;
     private boolean left, right, up, down;
@@ -20,7 +20,7 @@ public class Player extends Entity{
 
 
 
-    public Player(float x, float y) {
+    public Player2(float x, float y) {
         super(x, y);
         loadAnimations();
     }
@@ -63,9 +63,9 @@ public class Player extends Entity{
 
     private void setAnimation() {
         if(moving)
-            playerAction = RUNNING1;
+            playerAction = RUNNING2;
         else
-            playerAction = IDLE1;
+            playerAction = IDLE2;
     }
 
     private void updateAnimationTick() {
@@ -79,26 +79,13 @@ public class Player extends Entity{
         }
     }
     public void loadAnimations(){
-        InputStream is = getClass().getResourceAsStream("/Stick_figs.png");
+        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
+        animations = new BufferedImage[7][7];
 
-        try {
-            BufferedImage img = ImageIO.read(is);
-            animations = new BufferedImage[7][7];
-
-            for(int i = 0; i < animations.length; i++)
-                for (int j = 0; j < animations[i].length; j++)
-                    animations[i][j] = img.getSubimage(j * 160, i * 160, 120, 130);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            try {
-                is.close();
-            } catch (IOException e){
-                e.printStackTrace();
-            }
+        for(int i = 0; i < animations.length; i++)
+            for (int j = 0; j < animations[i].length; j++)
+                animations[i][j] = img.getSubimage(j * 160, i * 160, 120, 130);
     }
-}
 
     public void resetDirBooleans(){
         left = false;
