@@ -1,8 +1,7 @@
 package main;
 
 
-import entities.Player1;
-import entities.Player2;
+import entities.Player;
 
 import levels.LevelManager;
 
@@ -25,8 +24,8 @@ public class Game implements Runnable{
     private Thread gameThread;
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
-    private Player1 player1;
-    private Player2 player2;
+    private Player player1;
+    private Player player2;
 
 
     public Game(){
@@ -40,8 +39,8 @@ public class Game implements Runnable{
     }
 
     private void initClasses() {
-        player1 = new Player1(200f,200f);
-        player2 = new Player2(275f, 200f);
+        player1 = new Player(200f,200f, 1);
+        player2 = new Player(275f, 200f, 2);
         levelManager = new LevelManager(this);
     }
 
@@ -58,13 +57,7 @@ public class Game implements Runnable{
 
 
     public void render(Graphics g){
-
-
-
         levelManager.draw(g);
-        levelManager.render(g);
-
-
         levelManager.render(g);
         player1.render(g);
         player2.render(g);
@@ -121,12 +114,9 @@ public class Game implements Runnable{
 
     }
 
-    public Player1 getPlayer1(){
-        return player1;
-    }
-
-    public Player2 getPlayer2(){
-        return player2;
+    public Player getPlayer(int playerNum){
+        if (playerNum == 1){return player1;}
+        else {return player2;}
     }
 
 

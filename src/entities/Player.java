@@ -11,9 +11,10 @@ import java.io.InputStream;
 
 import static utilz.Constants.PlayerConstants.*;
 
-public class Player2 extends Entity{
+public class Player extends Entity{
     private int aniTick, aniIndex, aniSpeed = 17;
-    private int playerAction = IDLE2;
+    private final int playerNum;
+    private int playerAction;
     private boolean moving = false;
     private BufferedImage[][] animations;
     private boolean left, right, up, down;
@@ -21,9 +22,19 @@ public class Player2 extends Entity{
 
 
 
-    public Player2(float x, float y) {
+    public Player(float x, float y, int playerNum) {
         super(x, y);
+        this.playerNum = playerNum;
         loadAnimations();
+    }
+
+    public void choosePlayerMode(){
+        if (this.playerNum == 1){
+            this.playerAction = IDLE1;
+        }
+        else{
+            this.playerAction = IDLE2;
+        }
     }
 
     public void update(){
@@ -33,7 +44,7 @@ public class Player2 extends Entity{
     }
 
     public void render(Graphics g){
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, (int)(140 * Game.SCALE), (int) (140 * Game.SCALE), null);
+        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, (int) (140 * Game.SCALE), (int) (130 * Game.SCALE), null);
 
     }
     public void setDirection(int direction){
@@ -64,9 +75,11 @@ public class Player2 extends Entity{
 
     private void setAnimation() {
         if(moving)
-            playerAction = RUNNING2;
-        else
-            playerAction = IDLE2;
+            playerAction = RUNNING1;
+        else if (playerNum == 1) {
+            playerAction = IDLE1;
+        }
+        else { playerAction = IDLE2;}
     }
 
     private void updateAnimationTick() {
@@ -132,7 +145,7 @@ public class Player2 extends Entity{
     }
 
     public void setUp(boolean up) {
-        this.up = up;
+            this.up = up;
     }
 
     public boolean isDown() {
@@ -142,4 +155,5 @@ public class Player2 extends Entity{
     public void setDown(boolean down) {
         this.down = down;
     }
+
 }
