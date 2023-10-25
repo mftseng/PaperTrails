@@ -1,5 +1,6 @@
 package entities;
 
+import main.Game;
 import utilz.LoadSave;
 
 import javax.imageio.ImageIO;
@@ -32,7 +33,7 @@ public class Player1 extends Entity{
     }
 
     public void render(Graphics g){
-        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 120, 130, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, (int) (140 * Game.SCALE), (int) (130 * Game.SCALE), null);
 
     }
     public void setDirection(int direction){

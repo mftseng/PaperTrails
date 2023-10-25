@@ -9,14 +9,17 @@ import levels.LevelManager;
 import java.awt.*;
 
 public class Game implements Runnable{
-    public final static int TILES_DEFAULT_SIZE = 32;
     private LevelManager levelManager;
-    public final static float SCALE = 2f;
-    public final static int TILES_IN_WIDTH = 26;
-    public final static int TILES_IN_HEIGHT = 14;
-    public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
-    public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
-    public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
+    public final static float SCALE = .5f;
+    public final static int BLOCK_SIZE = (int)(120 * SCALE);
+    public final static int GAME_WIDTH = (int)(1920 * SCALE);
+    public final static int GAME_HEIGHT = (int)(1080 * SCALE);
+    public final static int FLOOR_HEIGHT = GAME_HEIGHT - (int)(30*SCALE);
+    public final static int LINE_SIZE = (int) (SCALE *20);
+    public final static int SPACE_BETWEEN_LINES = BLOCK_SIZE + LINE_SIZE;
+
+
+
     private GameWindow gameWindow;
     private GamePanel gamePanel;
     private Thread gameThread;

@@ -52,24 +52,41 @@ public class LevelManager {
 
 
         // bottom line
-        g.drawImage(levelSprite[1],0,790,null);
-        g.drawImage(levelSprite[1],800,790,null);
+        g.fillRect(0, Game.FLOOR_HEIGHT, Game.GAME_WIDTH, (int)(Game.SCALE*30));
 
         // bottom right stairs
         for (int i = 0; i <= 3; i ++){
             for (int j = 0; j <= i; j++){
-                g.fillRect(1310-75*j, 490 + 75*i, 75, 75);
+                g.fillRect((Game.GAME_WIDTH- Game.BLOCK_SIZE - Game.BLOCK_SIZE * j), ((Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4)+ Game.BLOCK_SIZE * i), Game.BLOCK_SIZE, Game.BLOCK_SIZE);
 
             }
         }
-        g.fillRect(400, 700, 500, 10);
+        //Line1
+        g.fillRect(Game.BLOCK_SIZE*3, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2, Game.GAME_WIDTH - Game.BLOCK_SIZE*9, Game.LINE_SIZE);
+        //Line2
+        g.fillRect(0, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES, Game.GAME_WIDTH - Game.BLOCK_SIZE*9, Game.LINE_SIZE);
+        //Line3
+        g.fillRect(Game.GAME_WIDTH - Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*2,Game.LINE_SIZE,Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE);
+        //Line 4
+        g.fillRect(Game.BLOCK_SIZE*2,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*2,Game.GAME_WIDTH - Game.BLOCK_SIZE*4,Game.LINE_SIZE);
+        //Left side box
+        g.fillRect(0,Game.FLOOR_HEIGHT - Game.SPACE_BETWEEN_LINES*2 - Game.BLOCK_SIZE*2,Game.SPACE_BETWEEN_LINES, Game.SPACE_BETWEEN_LINES);
+        //Line5
+        g.fillRect(0, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*3, Game.BLOCK_SIZE*2, Game.LINE_SIZE);
+        //Line6
+//        g.fillRect(Game.BLOCK_SIZE*9, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*3, Game.SPACE_BETWEEN_LINES*2, Game.LINE_SIZE);
+        //Line7
+        g.fillRect(Game.SPACE_BETWEEN_LINES*2,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE - Game.SPACE_BETWEEN_LINES*5,Game.BLOCK_SIZE*9,Game.BLOCK_SIZE/3);
+        //Line8
+        g.fillRect(Game.BLOCK_SIZE*13,Game.SPACE_BETWEEN_LINES,Game.BLOCK_SIZE*9,Game.BLOCK_SIZE/3);
 
-//        g.fillRect(1321-64*1,726,64,64);
-//        g.fillRect(1321-64*2,726,64,64);
-//        g.fillRect(1321-64*3,726,64,64);
-//        g.fillRect(1321,726,64,64);
-//        g.fillRect(1321-64*1,726,64,64);
-//        g.fillRect(1321-64*2,726,64,64);
+        //Moving Gate 1
+        g.fillRect(Game.GAME_WIDTH - Game.BLOCK_SIZE*6,(Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*2)+(Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE),Game.LINE_SIZE,Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE);
+
+        //Moving Gate 2
+        g.fillRect(0, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*3, Game.BLOCK_SIZE*2, Game.SPACE_BETWEEN_LINES + Game.LINE_SIZE);
+
+
 
 
     }
