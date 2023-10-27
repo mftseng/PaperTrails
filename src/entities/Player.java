@@ -27,15 +27,17 @@ public class Player extends Entity {
     private boolean left, right, up, down;
     private float playerSpeed = 2.0f;
     private LevelManager levelManager;
-    private float xDrawOffset = 21 * Game.SCALE;
-    private float yDrawOffset = 21 * Game.SCALE;
+
+    private float xDrawOffset = 60 * Game.SCALE;
+    private float yDrawOffset = 30 * Game.SCALE;
 
 
     public Player(float x, float y, int playerNum, Game game) {
-        super(x, y, game);
+        super(x, y, Game.CHAR_WIDTH, Game.CHAR_HEIGHT, game);
         this.playerNum = playerNum;
         loadAnimations();
         levelManager = new LevelManager(game);
+        innitHitBox(x, y, 58 * Game.SCALE, 95 * Game.SCALE);
     }
 
     public void choosePlayerMode() {
@@ -54,18 +56,11 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g) {
-        //Adjusted the running animation size so that it is the same size as the idle animation
         if (this.playerNum == 1)
-            if (playerAction == RUNNING1)
-                g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y + (int)(6 * Game.SCALE), Game.CHAR1_WIDTH, Game.CHAR1_HEIGHT - (int)(6 * Game.SCALE), null);
-            else
-                g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, Game.CHAR1_WIDTH, Game.CHAR1_HEIGHT, null);
-        else if (this.playerNum == 2)
-            if (playerAction == RUNNING2)
-                g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, Game.CHAR2_WIDTH, Game.CHAR2_HEIGHT- (int)(3 * Game.SCALE), null);
-            else
-                g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, Game.CHAR2_WIDTH, Game.CHAR2_HEIGHT, null);
-        drawHitbox(g);
+            g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), Game.CHAR1_WIDTH, Game.CHAR1_HEIGHT, null);
+        else
+            g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), Game.CHAR2_WIDTH, Game.CHAR2_HEIGHT, null);
+//        drawHitbox(g);
 
     }
 
@@ -172,9 +167,11 @@ public class Player extends Entity {
         else if (down && !up)
             ySpeed = playerSpeed;
 
-        if (CanMoveHere(x + xSpeed, y + ySpeed, Game.CHAR_WIDTH, Game.CHAR_HEIGHT, lvlDat)) {
-            x += xSpeed;
-            y += ySpeed;
+        if (CanMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, (int) hitbox.width, (int) hitbox.height, lvlDat)) {
+            hitbox.x += xSpeed;
+            hitbox.y += ySpeed;
+            x = hitbox.x;
+            y = hitbox.y;
             moving = true;
         }
     }

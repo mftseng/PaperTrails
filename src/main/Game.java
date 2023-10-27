@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class Game implements Runnable{
     private LevelManager levelManager;
-    public final static float SCALE = .7f;
+    public final static float SCALE = .6f;
     public final static int BLOCK_SIZE = (int)(120 * SCALE);
     public final static int GAME_WIDTH = (int)(1920 * SCALE);
     public final static int GAME_HEIGHT = (int)(1080 * SCALE);
@@ -48,8 +48,8 @@ public class Game implements Runnable{
 
     private void initClasses() {
         levelManager = new LevelManager(this);
-        player1 = new Player(0f * Game.SCALE,0f * Game.SCALE, 1, this);
-        player2 = new Player(200f * Game.SCALE, 0f * Game.SCALE, 2, this);
+        player1 = new Player(50f * Game.SCALE,50f * Game.SCALE, 1, this);
+        player2 = new Player(250f * Game.SCALE, 50f * Game.SCALE, 2, this);
 
     }
 

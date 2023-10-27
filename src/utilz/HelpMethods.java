@@ -8,7 +8,7 @@ import java.awt.*;
 public class HelpMethods {
     public static boolean CanMoveHere(float x, float y, int width, int height, Rectangle[] lvlDat) {
         //Boundaries of the game
-        if (x < 0 || x > Game.GAME_WIDTH)
+        if (x < 0 || x + width > Game.GAME_WIDTH)
             return false;
         if (y < 0 || y > Game.GAME_HEIGHT)
             return false;

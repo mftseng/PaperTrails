@@ -4,28 +4,32 @@ import main.Game;
 import org.w3c.dom.css.Rect;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public abstract class Entity {
 
     protected float x, y;
-    protected Rectangle hitbox;
+    protected Rectangle2D.Float hitbox;
     protected Game game;
+    protected int width, height;
 
-    public Entity(float x, float y, Game game) {
-        this.x = x;
-        this.y = y;
+
+    public Entity(float x, float y, int width, int height, Game game) {
+        this.x = x ;
+        this.y = y ;
+        this.width = width;
+        this.height = height;
         this.game = game;
-        innitHitBox();
     }
 
     protected void drawHitbox(Graphics g) {
         //for debugging the hitbox
         g.setColor(Color.PINK);
-        g.drawRect(hitbox.x, hitbox.y, Game.CHAR_WIDTH, Game.CHAR_HEIGHT);
+        g.drawRect((int)hitbox.x, (int)hitbox.y, (int) hitbox.width, (int) hitbox.height);
     }
 
-    private void innitHitBox() {
-        hitbox = new Rectangle((int) x, (int) y);
+    protected void innitHitBox(float x, float y, float width, float height) {
+        hitbox = new Rectangle2D.Float(x, y, width, height);
     }
 
     protected void updateHitbox() {
@@ -33,7 +37,7 @@ public abstract class Entity {
         hitbox.y = (int) y;
     }
 
-    public Rectangle getHitbox() {
+    public Rectangle2D.Float getHitbox() {
         return hitbox;
     }
 
