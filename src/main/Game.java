@@ -9,13 +9,21 @@ import java.awt.*;
 
 public class Game implements Runnable{
     private LevelManager levelManager;
-    public final static float SCALE = .5f;
+    public final static float SCALE = .7f;
     public final static int BLOCK_SIZE = (int)(120 * SCALE);
     public final static int GAME_WIDTH = (int)(1920 * SCALE);
     public final static int GAME_HEIGHT = (int)(1080 * SCALE);
     public final static int FLOOR_HEIGHT = GAME_HEIGHT - (int)(30*SCALE);
     public final static int LINE_SIZE = (int) (SCALE *20);
     public final static int SPACE_BETWEEN_LINES = BLOCK_SIZE + LINE_SIZE;
+
+    public final static int CHAR1_WIDTH = (int) (140 * Game.SCALE);
+    public final static int CHAR1_HEIGHT = (int) (130 * Game.SCALE);
+    public final static int CHAR2_WIDTH = (int) (140 * Game.SCALE);
+    public final static int CHAR2_HEIGHT = (int) (140 * Game.SCALE);
+    public final static int CHAR_WIDTH = (int) (140 * Game.SCALE);
+    public final static int CHAR_HEIGHT = (int) (140 * Game.SCALE);
+
 
 
 
@@ -39,9 +47,10 @@ public class Game implements Runnable{
     }
 
     private void initClasses() {
-        player1 = new Player(200f,200f, 1);
-        player2 = new Player(275f, 200f, 2);
         levelManager = new LevelManager(this);
+        player1 = new Player(0f * Game.SCALE,0f * Game.SCALE, 1, this);
+        player2 = new Player(200f * Game.SCALE, 0f * Game.SCALE, 2, this);
+
     }
 
     private void startGameLoop(){
@@ -57,7 +66,6 @@ public class Game implements Runnable{
 
 
     public void render(Graphics g){
-        levelManager.draw(g);
         levelManager.render(g);
         player1.render(g);
         player2.render(g);
@@ -117,6 +125,10 @@ public class Game implements Runnable{
     public Player getPlayer(int playerNum){
         if (playerNum == 1){return player1;}
         else {return player2;}
+    }
+
+    public LevelManager getLvlManager(){
+        return levelManager;
     }
 
 
