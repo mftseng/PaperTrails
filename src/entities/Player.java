@@ -32,7 +32,13 @@ public class Player extends Entity {
     private float xDrawOffset = 60 * Game.SCALE;
     private float yDrawOffset = 30 * Game.SCALE;
 
-    private float gravity = .5f;
+    //Jumping.Gravity
+    private float airSpeed = 0f;
+    private float gravity = .15f * Game.SCALE;
+    private float jumpSpeed = -2.25f * Game.SCALE;
+    private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
+    private boolean inAir = false;
+    private boolean jump = false;
 
 
     public Player(float x, float y, int playerNum, Game game) {
@@ -57,7 +63,7 @@ public class Player extends Entity {
         updateHitbox();
         updateAnimationTick();
         setAnimation();
-     //   updateGravity();
+        //   updateGravity();
     }
 
 
@@ -96,16 +102,15 @@ public class Player extends Entity {
     }
 
     private void setAnimation() {
-        if(moving)
+        if (moving)
             if (playerNum == 1)
                 playerAction = RUNNING1;
             else
                 playerAction = RUNNING2;
+        else if (playerNum == 1)
+            playerAction = IDLE1;
         else
-            if (playerNum == 1)
-                playerAction = IDLE1;
-            else
-                playerAction = IDLE2;
+            playerAction = IDLE2;
     }
 
     public void resetDirBooleans() {
@@ -159,53 +164,50 @@ public class Player extends Entity {
         Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
         moving = false;
 
-        if (!left && !right && !up && !down)
+
+        if (!left && !right && !up && !inAir)
             return;
 
-        float xSpeed = 0, ySpeed = 0;
+        float xSpeed = 0;
 
-        if (left && !right)
-            xSpeed = -playerSpeed;
-        else if (right && !left)
-            xSpeed = playerSpeed;
-//        if (up && !down)
-//            ySpeed = -playerSpeed;
-//        else if (down && !up)
-//            ySpeed = playerSpeed;
+        if (left)
+            xSpeed -= playerSpeed;
+        if (right)
+            xSpeed += playerSpeed;
+
+        inAir = CanMoveHere(hitbox.x, hitbox.y + airSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
 
 
-        boolean CanMoveNextSpot = CanMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
-        boolean CanMoveDown = CanMoveHere(hitbox.x, hitbox.y + playerSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
 
-        if (CanMoveNextSpot) {
-            hitbox.x += xSpeed;
-            hitbox.y += ySpeed;
-            x = hitbox.x;
-            y = hitbox.y;
-            moving = true;
+        if (inAir) {
+            if(CanMoveHere(hitbox.x, hitbox.y + airSpeed,(int) hitbox.width, (int) hitbox.height, lvlDat)){
+                hitbox.y += airSpeed;
+                y = hitbox.y;
+                airSpeed += gravity;
+                updateXPos(xSpeed);
+            }
+        } else {
+            airSpeed = 0;
+            updateXPos(xSpeed);
+
         }
 
-        if(!getBottomOverlap() && CanMoveDown){
-            hitbox.y += playerSpeed;
-            y = hitbox.y;
-        }
+        moving = true;
 
-        System.out.println(getBottomOverlap());
-       // System.out.println(CanMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, (int) hitbox.width, (int) hitbox.height, lvlDat));
+
     }
-//    private void updateGravity() {
-//        Rectangle[] lvlData = levelManager.getLvlData(); // Access the lvlDat array
-//        for (int i = 0; i < lvlData.length; i++) {
-//            if(!getBottomOverlap() && CanMoveHere(hitbox.x,hitbox.y + gravity, (int)hitbox.width, (int) hitbox.height, lvlData)){
-//                System.out.println("Add gravity");
-//            }
-//        }
-//
-//    }
 
 
 
+    private void updateXPos(float xSpeed) {
+        Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
+        if (CanMoveHere(hitbox.x + xSpeed, hitbox.y, (int) hitbox.width, (int) hitbox.height, lvlDat)) {
+            hitbox.x += xSpeed;
+            x = hitbox.x;
+        }
 
+
+    }
 
 }
 
