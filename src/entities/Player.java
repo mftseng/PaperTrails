@@ -32,6 +32,8 @@ public class Player extends Entity {
     private float xDrawOffset = 60 * Game.SCALE;
     private float yDrawOffset = 30 * Game.SCALE;
 
+    private float gravity = .5f;
+
 
     public Player(float x, float y, int playerNum, Game game) {
         super(x, y, Game.CHAR_WIDTH, Game.CHAR_HEIGHT, game);
@@ -39,6 +41,7 @@ public class Player extends Entity {
         loadAnimations();
         levelManager = new LevelManager(game);
         innitHitBox(x, y, 58 * Game.SCALE, 95 * Game.SCALE);
+
     }
 
     public void choosePlayerMode() {
@@ -54,14 +57,16 @@ public class Player extends Entity {
         updateHitbox();
         updateAnimationTick();
         setAnimation();
+     //   updateGravity();
     }
+
 
     public void render(Graphics g) {
         if (this.playerNum == 1)
             g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), Game.CHAR1_WIDTH, Game.CHAR1_HEIGHT, null);
         else
             g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), Game.CHAR2_WIDTH, Game.CHAR2_HEIGHT, null);
-//        drawHitbox(g);
+        drawHitbox(g);
 
     }
 
@@ -152,8 +157,8 @@ public class Player extends Entity {
 
     private void updatePos() {
         Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
-
         moving = false;
+
         if (!left && !right && !up && !down)
             return;
 
@@ -163,12 +168,16 @@ public class Player extends Entity {
             xSpeed = -playerSpeed;
         else if (right && !left)
             xSpeed = playerSpeed;
-        if (up && !down)
-            ySpeed = -playerSpeed;
-        else if (down && !up)
-            ySpeed = playerSpeed;
+//        if (up && !down)
+//            ySpeed = -playerSpeed;
+//        else if (down && !up)
+//            ySpeed = playerSpeed;
 
-        if (CanMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, (int) hitbox.width, (int) hitbox.height, lvlDat)) {
+
+        boolean CanMoveNextSpot = CanMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
+        boolean CanMoveDown = CanMoveHere(hitbox.x, hitbox.y + playerSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
+
+        if (CanMoveNextSpot) {
             hitbox.x += xSpeed;
             hitbox.y += ySpeed;
             x = hitbox.x;
@@ -176,9 +185,28 @@ public class Player extends Entity {
             moving = true;
         }
 
+        if(!getBottomOverlap() && CanMoveDown){
+            hitbox.y += playerSpeed;
+            y = hitbox.y;
+        }
+
         System.out.println(getBottomOverlap());
        // System.out.println(CanMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, (int) hitbox.width, (int) hitbox.height, lvlDat));
     }
+//    private void updateGravity() {
+//        Rectangle[] lvlData = levelManager.getLvlData(); // Access the lvlDat array
+//        for (int i = 0; i < lvlData.length; i++) {
+//            if(!getBottomOverlap() && CanMoveHere(hitbox.x,hitbox.y + gravity, (int)hitbox.width, (int) hitbox.height, lvlData)){
+//                System.out.println("Add gravity");
+//            }
+//        }
+//
+//    }
+
+
+
+
+
 }
 
 
