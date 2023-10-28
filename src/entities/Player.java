@@ -16,6 +16,7 @@ import java.io.InputStream;
 import static utilz.Constants.PlayerConstants.*;
 import static levels.LevelManager.*;
 import static utilz.HelpMethods.CanMoveHere;
+import static utilz.HelpMethods.getBottomOverlap;
 
 public class Player extends Entity {
 
@@ -174,6 +175,9 @@ public class Player extends Entity {
             y = hitbox.y;
             moving = true;
         }
+
+        System.out.println(getBottomOverlap());
+       // System.out.println(CanMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, (int) hitbox.width, (int) hitbox.height, lvlDat));
     }
 }
 
