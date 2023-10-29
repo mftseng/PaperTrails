@@ -16,6 +16,9 @@ public class Constants {
         public static final int JUMP1 = 4;
         public static final int JUMP2 = 5;
         public static final int DEATH = 6;
+        public static final int JUMPING1 = 7;
+        public static final int JUMPING2 = 8;
+
 
         public static int GetSpriteAmount(int player_action){
             switch(player_action){
@@ -26,9 +29,8 @@ public class Constants {
                 case IDLE1:
                 case IDLE2:
                     return 2;
-                case JUMP1:
-                case JUMP2:
-                    return 4;
+                case JUMPING1:
+                case JUMPING2:
                 default:
                     return 1;
 

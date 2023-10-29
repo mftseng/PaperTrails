@@ -15,8 +15,7 @@ import java.io.InputStream;
 
 import static utilz.Constants.PlayerConstants.*;
 import static levels.LevelManager.*;
-import static utilz.HelpMethods.CanMoveHere;
-import static utilz.HelpMethods.getBottomOverlap;
+import static utilz.HelpMethods.*;
 
 public class Player extends Entity {
 
@@ -24,6 +23,7 @@ public class Player extends Entity {
     private final int playerNum;
     private int playerAction;
     private boolean moving = false;
+    private boolean movingX = false;
     private BufferedImage[][] animations;
     private boolean left, right, up, down;
     private float playerSpeed = 2.0f;
@@ -35,8 +35,7 @@ public class Player extends Entity {
     //Jumping.Gravity
     private float airSpeed = 0f;
     private float gravity = .15f * Game.SCALE;
-    private float jumpSpeed = -7f * Game.SCALE;
-    private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
+    private float jumpSpeed = -6f * Game.SCALE;
     private boolean inAir = false;
 
 
@@ -48,22 +47,21 @@ public class Player extends Entity {
         levelManager = new LevelManager(game);
         innitHitBox(x, y, 58 * Game.SCALE, 95 * Game.SCALE);
 
+
     }
 
-    public void choosePlayerMode() {
-        if (this.playerNum == 1) {
-            this.playerAction = IDLE1;
-        } else {
-            this.playerAction = IDLE2;
-        }
-    }
 
     public void update() {
+        //isInAir();
         updatePos();
         updateHitbox();
         updateAnimationTick();
         setAnimation();
-        //   updateGravity();
+
+        System.out.println("inAir: " + inAir);
+        System.out.println("Moving: " + moving);
+        System.out.println("MovingX: " + movingX);
+        System.out.println();
     }
 
 
@@ -83,11 +81,17 @@ public class Player extends Entity {
 
     public void loadAnimations() {
         BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
-        animations = new BufferedImage[7][7];
+        animations = new BufferedImage[9][7];
 
-        for (int i = 0; i < animations.length; i++)
-            for (int j = 0; j < animations[i].length; j++)
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < animations[i].length; j++) {
                 animations[i][j] = img.getSubimage(j * 160, i * 160, 120, 130);
+            }
+        }
+        animations[7][0] = animations[4][4];
+        animations[8][0] = animations[5][2];
+
+
     }
 
     private void updateAnimationTick() {
@@ -102,11 +106,20 @@ public class Player extends Entity {
     }
 
     private void setAnimation() {
-        if (moving)
-            if (playerNum == 1)
+        if(movingX) {
+            if (playerNum == 1) {
                 playerAction = RUNNING1;
-            else
+            } else {
                 playerAction = RUNNING2;
+            }
+        }
+        else if (!movingX && moving){
+            if (playerNum == 1) {
+                playerAction = JUMPING1;
+            } else {
+                playerAction = JUMPING2;
+            }
+        }
         else if (playerNum == 1)
             playerAction = IDLE1;
         else
@@ -163,20 +176,21 @@ public class Player extends Entity {
     private void updatePos() {
         Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
         moving = false;
+        movingX = false;
 
-
+        float xSpeed = 0;
         if (!left && !right && !up && !inAir) {
             return;
         }
+        inAir = CanMoveHere(hitbox.x, hitbox.y + airSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
 
-        float xSpeed = 0;
+
 
         if (left)
             xSpeed -= playerSpeed;
         if (right)
             xSpeed += playerSpeed;
 
-        inAir = CanMoveHere(hitbox.x, hitbox.y + airSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
 
         if (up) {
             if (!inAir) {
@@ -190,16 +204,26 @@ public class Player extends Entity {
                 hitbox.y += airSpeed;
                 y = hitbox.y;
                 airSpeed += gravity;
-                updateXPos(xSpeed);
+                if(right || left)
+                    updateXPos(xSpeed);
             }
         } else {
             airSpeed = 0;
-            updateXPos(xSpeed);
+            if(right || left)
+                updateXPos(xSpeed);
 
         }
 
         moving = true;
+//        System.out.println("inAir: " + inAir);
+//        System.out.println("Moving: " + moving);
+//        System.out.println("MovingX: " + movingX);
+//        System.out.println();
 
+//        System.out.println("Bottom Overlap: " + getBottomOverlap());
+//        System.out.println("Top overlap: " + getTopOverlap());
+//        System.out.println("Right overlap: " + getRightOverlap());
+//        System.out.println("Bottom overlap: " + getBottomOverlap());
 
     }
 
@@ -210,8 +234,8 @@ public class Player extends Entity {
         if (CanMoveHere(hitbox.x + xSpeed, hitbox.y, (int) hitbox.width, (int) hitbox.height, lvlDat)) {
             hitbox.x += xSpeed;
             x = hitbox.x;
+            movingX = true;
         }
-
 
     }
 

@@ -57,7 +57,7 @@ public class LevelManager {
         //Line6
         lvlDat[0][5] = new Rectangle(Game.SPACE_BETWEEN_LINES*2,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE - Game.SPACE_BETWEEN_LINES*5,Game.BLOCK_SIZE*9,Game.BLOCK_SIZE/3);
         //Line 7
-        lvlDat[0][6] = new Rectangle(Game.BLOCK_SIZE*13,Game.SPACE_BETWEEN_LINES,Game.BLOCK_SIZE*9,Game.BLOCK_SIZE/3);
+        lvlDat[0][6] = new Rectangle(Game.BLOCK_SIZE*13,Game.SPACE_BETWEEN_LINES + Game.LINE_SIZE *3,Game.BLOCK_SIZE*9,Game.BLOCK_SIZE/3);
 
         //Left side box
         lvlDat[0][7] = new Rectangle (0,Game.FLOOR_HEIGHT - Game.SPACE_BETWEEN_LINES*2 - Game.BLOCK_SIZE*2,Game.SPACE_BETWEEN_LINES, Game.SPACE_BETWEEN_LINES);
