@@ -1,7 +1,9 @@
 package Inputs;
 
+import gamestates.Gamestate;
 import main.GamePanel;
 
+import javax.swing.event.MenuListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import static utilz.Constants.Directions.*;
@@ -19,63 +21,32 @@ public class KeyboardInputs implements KeyListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
-        switch(e.getKeyCode()) {
-            case KeyEvent.VK_W:
-                gamePanel.getGame().getPlayer(1).setUp(true);
+    public void keyReleased(KeyEvent e) {
+        switch (Gamestate.state) {
+            case MENU:
+                gamePanel.getGame().getMenu().keyReleased(e);
                 break;
-            case KeyEvent.VK_A:
-                gamePanel.getGame().getPlayer(1).setLeft(true);
+            case PLAYING:
+                gamePanel.getGame().getPlaying().keyReleased(e);
                 break;
-            case KeyEvent.VK_S:
-                gamePanel.getGame().getPlayer(1).setDown(true);
+            default:
                 break;
-            case KeyEvent.VK_D:
-                gamePanel.getGame().getPlayer(1).setRight(true);
-                break;
-            case KeyEvent.VK_UP:
-                gamePanel.getGame().getPlayer(2).setUp(true);
-                break;
-            case KeyEvent.VK_LEFT:
-                gamePanel.getGame().getPlayer(2).setLeft(true);
-                break;
-            case KeyEvent.VK_DOWN:
-                gamePanel.getGame().getPlayer(2).setDown(true);
-                break;
-            case KeyEvent.VK_RIGHT:
-                gamePanel.getGame().getPlayer(2).setRight(true);
-                break;
-        }
 
+        }
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-        switch(e.getKeyCode()) {
-            case KeyEvent.VK_W:
-                gamePanel.getGame().getPlayer(1).setUp(false);
+    public void keyPressed(KeyEvent e) {
+        switch (Gamestate.state) {
+            case MENU:
+                gamePanel.getGame().getMenu().keyPressed(e);
                 break;
-            case KeyEvent.VK_A:
-                gamePanel.getGame().getPlayer(1).setLeft(false);
+            case PLAYING:
+                gamePanel.getGame().getPlaying().keyPressed(e);
                 break;
-            case KeyEvent.VK_S:
-                gamePanel.getGame().getPlayer(1).setDown(false);
-                break;
-            case KeyEvent.VK_D:
-                gamePanel.getGame().getPlayer(1).setRight(false);
-                break;
-            case KeyEvent.VK_UP:
-                gamePanel.getGame().getPlayer(2).setUp(false);
-                break;
-            case KeyEvent.VK_LEFT:
-                gamePanel.getGame().getPlayer(2).setLeft(false);
-                break;
-            case KeyEvent.VK_DOWN:
-                gamePanel.getGame().getPlayer(2).setDown(false);
-                break;
-            case KeyEvent.VK_RIGHT:
-                gamePanel.getGame().getPlayer(2).setRight(false);
+            default:
                 break;
         }
     }
 }
+

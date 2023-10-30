@@ -3,11 +3,18 @@ package main;
 
 import entities.Player;
 
+import gamestates.GMenu;
+import gamestates.Gamestate;
+import gamestates.Playing;
 import levels.LevelManager;
 
 import java.awt.*;
 
+import static java.awt.SystemColor.menu;
+
 public class Game implements Runnable{
+    private Playing playing;
+    private GMenu menu;
     private LevelManager levelManager;
     public final static float SCALE = .6f;
     public final static int BLOCK_SIZE = (int)(120 * SCALE);
@@ -45,30 +52,42 @@ public class Game implements Runnable{
 
         startGameLoop();
     }
-
-    private void initClasses() {
-        levelManager = new LevelManager(this);
-        player1 = new Player(50f * Game.SCALE,50f * Game.SCALE, 1, this);
-        player2 = new Player(250f * Game.SCALE, 50f * Game.SCALE, 2, this);
+    private void initClasses(){
+        menu = new GMenu(this);
+        playing = new Playing(this);
 
     }
-
     private void startGameLoop(){
         gameThread = new Thread(this);
         gameThread.start();
     }
 
     public void update(){
-        player1.update();
-        player2.update();
-        levelManager.update();
+        switch(Gamestate.state){
+            case MENU:
+                menu.update();
+                break;
+            case PLAYING:
+                playing.update();
+                break;
+            default:
+                break;
+        }
     }
 
 
     public void render(Graphics g){
-        levelManager.render(g);
-        player1.render(g);
-        player2.render(g);
+        switch(Gamestate.state){
+            case MENU:
+                menu.draw(g);
+                break;
+            case PLAYING:
+                playing.draw(g);
+                break;
+            default:
+                break;
+        }
+
 
 
     }
@@ -117,8 +136,10 @@ public class Game implements Runnable{
     }
 
     public void windowFocusLost(){
-        player1.resetDirBooleans();
-        player2.resetDirBooleans();
+        if (Gamestate.state == Gamestate.PLAYING){
+            playing.getPlayer1().resetDirBooleans();
+            playing.getPlayer2().resetDirBooleans();
+        }
 
     }
 
@@ -129,6 +150,14 @@ public class Game implements Runnable{
 
     public LevelManager getLvlManager(){
         return levelManager;
+    }
+
+    public GMenu getMenu(){
+        return menu;
+    }
+
+    public Playing getPlaying(){
+        return playing;
     }
 
 
