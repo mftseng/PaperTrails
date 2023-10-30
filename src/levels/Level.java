@@ -1,15 +1,12 @@
 package levels;
 
-public class Level {
+public enum Level {
 
-    private static int[][] lvlData;
+    LEVEl1, LEVEl2, LEVEL3, LEVEL4, LEVEL5, LEVEL6, LEVEL7, LEVEL8, LEVEL9, LEVEL10, ENDINGANI;
 
-    public Level(int[][] lvlData) {
-        this.lvlData = lvlData;
-        }
+    public static Level level = LEVEl1;
 
-    public int getSpriteIndex(int x, int y) {
-            return lvlData[y][x];
-        }
+
+
 
         }

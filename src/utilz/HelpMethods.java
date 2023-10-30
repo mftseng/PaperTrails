@@ -18,28 +18,30 @@ public class HelpMethods {
             return false;
         //Checks for collision of level objects
         for (int i = 0; i < lvlDat.length; i++) {
+            if(lvlDat[i] != null) {
+
 //            leftOverlap = (lvlDat[i].x + lvlDat[i].width >= (int) x) && (lvlDat[i].x <= (int) x);
 //            topOverlap = (lvlDat[i].y + lvlDat[i].height >= (int) y) && ((int) y >=  lvlDat[i].y);
 //            rightOverlap = ((int) x + width >= lvlDat[i].x) && ((int) x <= lvlDat[i].x + lvlDat[i].width);
 //            bottomOverlap = ((int) y + height >= lvlDat[i].y) && ((int) y + height <= lvlDat[i].y + lvlDat[i].height);
-            leftOverlap = (lvlDat[i].x + lvlDat[i].width >= (int) x);
-            topOverlap = (lvlDat[i].y + lvlDat[i].height >= (int) y);
-            rightOverlap = ((int) x + width >= lvlDat[i].x);
-            bottomOverlap = ((int) y + height >= lvlDat[i].y);
+                leftOverlap = (lvlDat[i].x + lvlDat[i].width >= (int) x);
+                topOverlap = (lvlDat[i].y + lvlDat[i].height >= (int) y);
+                rightOverlap = ((int) x + width >= lvlDat[i].x);
+                bottomOverlap = ((int) y + height >= lvlDat[i].y);
 
 
-            if (
-                    leftOverlap
-                            && //left side collision
-                    topOverlap
-                            && //top side collision
-                    rightOverlap
-                            && //right side collision
-                    bottomOverlap//bottom side collision
+                if (
+                        leftOverlap
+                                && //left side collision
+                                topOverlap
+                                && //top side collision
+                                rightOverlap
+                                && //right side collision
+                                bottomOverlap//bottom side collision
 
-            )
-        {
-                return false; // Collision detected
+                ) {
+                    return false; // Collision detected
+                }
             }
         }
         return true; // No collision detected

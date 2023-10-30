@@ -35,7 +35,7 @@ public class Player extends Entity {
     //Jumping.Gravity
     private float airSpeed = 0f;
     private float gravity = .15f * Game.SCALE;
-    private float jumpSpeed = -6f * Game.SCALE;
+    private float jumpSpeed = -6.1f * Game.SCALE;
     private boolean inAir = false;
 
 
