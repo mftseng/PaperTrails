@@ -18,6 +18,7 @@ public class Constants {
         public static final int DEATH = 6;
         public static final int JUMPING1 = 7;
         public static final int JUMPING2 = 8;
+        public static final int DISAPPEAR = 9;
 
 
         public static int GetSpriteAmount(int player_action){
@@ -36,5 +37,13 @@ public class Constants {
 
             }
         }
+
+    }
+    public static class ObstacleConstants{
+        public static final int GEM = 1;
+        public static final int FIRE = 2;
+        public static final int PENCIL = 3;
+        public static final int GONE = 4;
+
     }
 }

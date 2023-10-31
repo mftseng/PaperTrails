@@ -1,9 +1,12 @@
 package utilz;
 
+import levels.Level;
 import levels.LevelManager;
 import main.Game;
 
 import java.awt.*;
+
+import static utilz.Constants.PlayerConstants.GetSpriteAmount;
 
 public class HelpMethods {
     private static boolean topOverlap;
@@ -19,27 +22,11 @@ public class HelpMethods {
         //Checks for collision of level objects
         for (int i = 0; i < lvlDat.length; i++) {
             if(lvlDat[i] != null) {
-
-//            leftOverlap = (lvlDat[i].x + lvlDat[i].width >= (int) x) && (lvlDat[i].x <= (int) x);
-//            topOverlap = (lvlDat[i].y + lvlDat[i].height >= (int) y) && ((int) y >=  lvlDat[i].y);
-//            rightOverlap = ((int) x + width >= lvlDat[i].x) && ((int) x <= lvlDat[i].x + lvlDat[i].width);
-//            bottomOverlap = ((int) y + height >= lvlDat[i].y) && ((int) y + height <= lvlDat[i].y + lvlDat[i].height);
                 leftOverlap = (lvlDat[i].x + lvlDat[i].width >= (int) x);
                 topOverlap = (lvlDat[i].y + lvlDat[i].height >= (int) y);
                 rightOverlap = ((int) x + width >= lvlDat[i].x);
                 bottomOverlap = ((int) y + height >= lvlDat[i].y);
-
-
-                if (
-                        leftOverlap
-                                && //left side collision
-                                topOverlap
-                                && //top side collision
-                                rightOverlap
-                                && //right side collision
-                                bottomOverlap//bottom side collision
-
-                ) {
+                if (leftOverlap && topOverlap && rightOverlap && bottomOverlap) {
                     return false; // Collision detected
                 }
             }
@@ -48,21 +35,7 @@ public class HelpMethods {
     }
 
 
-    public static boolean getTopOverlap(){
-        return topOverlap;
-    }
 
-    public static boolean getBottomOverlap(){
-        return bottomOverlap;
-    }
-
-    public static boolean getRightOverlap(){
-        return rightOverlap;
-    }
-
-    public static boolean getLeftOverlap(){
-        return leftOverlap;
-    }
 
 
 }

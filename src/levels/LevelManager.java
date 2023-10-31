@@ -7,25 +7,34 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 
+import entities.Obstacle;
 import main.Game;
+import org.w3c.dom.css.Rect;
 import utilz.LoadSave;
 
 import static levels.Level.*;
+import static utilz.Constants.PlayerConstants.GetSpriteAmount;
+import static utilz.HelpMethods.CanMoveHere;
 
 public class LevelManager {
-
+    private int aniTick, aniIndex, aniSpeed = 17;
+    private int playerAction;
     private Game game;
-    private BufferedImage[] levelSprite;
-    private BufferedImage[][] title;
-    private Level levelOne;
+    private BufferedImage[] animations;
     private int levelNum = 0;
     private static Rectangle[] lvlDat;
     private int levelChange = 1;
-
     private boolean LevelCreated = false;
+    private boolean isThereButtons;
+    private static Rectangle[] buttons;
+    private static Obstacle[] obstacles;
+
+
+
 
     public LevelManager(Game game) {
         this.game = game;
+        loadAnimations();
 
     }
 
@@ -38,6 +47,13 @@ public class LevelManager {
     public int getLevelNum(){
         return levelNum;
     }
+    public boolean getisThereButtons(){return isThereButtons;}
+    public Rectangle[] getLvlData(){
+        return lvlDat;
+    }
+    public Rectangle[] getButtons(){return buttons;}
+    public Obstacle[] getObstacles(){return obstacles;}
+
 
     public void updateLevel(){
 
@@ -45,13 +61,17 @@ public class LevelManager {
 
 
     public void render(Graphics g) {
-        createLevel();
+        createLevel(g);
         drawLevel(g);
     }
 
-    public void createLevel1(){
+    public void createLevel1(Graphics g){
         lvlDat = new Rectangle[1];
         lvlDat[0] = new Rectangle(0, Game.GAME_HEIGHT/2 + Game.BLOCK_SIZE*2,Game.GAME_WIDTH,Game.GAME_HEIGHT/2);
+        g.drawImage(animations[aniIndex], Game.BLOCK_SIZE*3, Game.BLOCK_SIZE, 700, 200, null);
+        obstacles = new Obstacle[1];
+        obstacles[0] = new Obstacle("PENCIL", 400, 400, game);
+        updateAnimationTick();
     }
 
     public void createLevel2(){
@@ -63,12 +83,30 @@ public class LevelManager {
     }
 
     public void createLevel3(){
-        lvlDat = new Rectangle[];
+        lvlDat = new Rectangle[8];
+        //Floor line
+        lvlDat[0] = new Rectangle(0, Game.FLOOR_HEIGHT, Game.GAME_WIDTH, (int)(Game.SCALE*30));
+        //Bottom Rectangle
+        lvlDat[1] = new Rectangle(Game.BLOCK_SIZE*4, Game.GAME_HEIGHT - Game.BLOCK_SIZE - Game.LINE_SIZE*4, Game.BLOCK_SIZE*8, Game.JUMP_HEIGHT+ Game.BLOCK_SIZE);
+        //Left bottom line
+        lvlDat[2] = new Rectangle(0, Game.FLOOR_HEIGHT- Game.JUMP_HEIGHT*2 - Game.LINE_SIZE , Game.BLOCK_SIZE*4, Game.LINE_SIZE);
+        //Right bottom line
+        lvlDat[3] = new Rectangle(Game.BLOCK_SIZE*12, Game.FLOOR_HEIGHT- Game.JUMP_HEIGHT*2 - Game.LINE_SIZE , Game.BLOCK_SIZE*4, Game.LINE_SIZE);
+        //Middle middle line
+        lvlDat[4] = new Rectangle(Game.BLOCK_SIZE*4, Game.GAME_HEIGHT - Game.BLOCK_SIZE - Game.LINE_SIZE*5 - Game.JUMP_HEIGHT*2, Game.BLOCK_SIZE*8, Game.LINE_SIZE);
+        //Left middle line
+        lvlDat[5] = new Rectangle(0, Game.FLOOR_HEIGHT- Game.JUMP_HEIGHT*4 - Game.LINE_SIZE*2, Game.BLOCK_SIZE*4, Game.LINE_SIZE);
+        //Right middle line
+        lvlDat[6] = new Rectangle(Game.BLOCK_SIZE*12, Game.FLOOR_HEIGHT- Game.JUMP_HEIGHT*4- Game.LINE_SIZE*2, Game.BLOCK_SIZE*4, Game.LINE_SIZE);
+        //Middle top line
+        lvlDat[7] = new Rectangle(Game.BLOCK_SIZE*4, Game.GAME_HEIGHT - Game.BLOCK_SIZE - Game.LINE_SIZE*6 - Game.JUMP_HEIGHT*4, Game.BLOCK_SIZE*8, Game.LINE_SIZE);
+
 
     }
 
-    public void createLevel5(){
-        lvlDat = new Rectangle[21];
+    public void createLevel4(){
+        isThereButtons = true;
+        lvlDat = new Rectangle[23];
         //Line1
         lvlDat[0] = new Rectangle(Game.BLOCK_SIZE*3, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2, Game.GAME_WIDTH - Game.BLOCK_SIZE*9, Game.LINE_SIZE);
         //Line2
@@ -104,28 +142,43 @@ public class LevelManager {
                 index ++;
             }
         }
+        lvlDat[21] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+        lvlDat[22] = new Rectangle(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+
+        //buttons
+        buttons = new Rectangle[2];
+        buttons[0] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+        buttons[1] = new Rectangle(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+
+
         LevelCreated = true;
     }
 
 
-    public Rectangle[] getLvlData(){
-        return lvlDat;
-    }
-
     public void drawLevel(Graphics g){
         //print function
-        for (int i = 0; i < lvlDat.length; i++){
-            g.fillRect(lvlDat[i].x,lvlDat[i].y,lvlDat[i].width,lvlDat[i].height);
+        for (int i = 0; i < lvlDat.length; i++) {
+            g.fillRect(lvlDat[i].x, lvlDat[i].y, lvlDat[i].width, lvlDat[i].height);
         }
+        if (isThereButtons){
+            for (int j = 0; j < buttons.length; j++){
+            g.setColor(Color.PINK);
+            g.fillRect(buttons[j].x, buttons[j].y, buttons[j].width, buttons[j].height);
+        }
+
+    }
     }
 
 
-    public void createLevel(){
+
+
+    public void createLevel(Graphics g){
         switch(levelChange){
             case 1:
                 if(!LevelCreated){
-                    createLevel1();
+                    createLevel1(g);
                 }
+
                 break;
             case 2:
                 if(!LevelCreated){
@@ -133,13 +186,25 @@ public class LevelManager {
                 }
                 break;
             case 3:
+                if(!LevelCreated){
+                    createLevel3();
+                }
                 break;
             case 4:
+                if(!LevelCreated){
+                    createLevel4();
+
+//                    if (!CanMoveHere(Game.getPlayer(1).getHitbox().x,Game.getPlayer(1).getHitbox().y,(int)Game.getPlayer(1).getHitbox().width,(int)Game.getPlayer(1).getHitbox().height,buttons)
+//                        ||
+//                        !CanMoveHere(Game.getPlayer(2).getHitbox().x,Game.getPlayer(2).getHitbox().y,(int)Game.getPlayer(2).getHitbox().width,(int)Game.getPlayer(2).getHitbox().height,buttons)
+//                    ){
+//                        System.out.println("button pressed");
+//                    }
+
+
+                }
                 break;
             case 5:
-                if(!LevelCreated){
-                    createLevel5();
-                }
                 break;
             case 6:
                 break;
@@ -159,6 +224,35 @@ public class LevelManager {
 
 
         }
+    }
+
+
+
+    public void loadAnimations() {
+        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.TITLE_ATLAS);
+        animations = new BufferedImage[3];
+        animations[0] = img.getSubimage( 0, 166, 175, 53);
+        animations[1] = img.getSubimage( 175, 166, 195, 53);
+        animations[2] = img.getSubimage(370, 166, 210, 53);
+
+
+    }
+    private void updateAnimationTick() {
+        aniTick++;
+        if (aniTick >= aniSpeed) {
+            aniTick = 0;
+            aniIndex++;
+            if (aniIndex >= 3) {
+                aniIndex = 0;
+            }
+        }
+    }
+//    public Obstacle[] getObstacles{
+//        return obstacles;
+//    }
+
+    public boolean getLevelCreated(){
+        return LevelCreated;
     }
 
 

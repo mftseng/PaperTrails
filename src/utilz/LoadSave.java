@@ -12,7 +12,8 @@ import main.Game;
 public class LoadSave {
 
     public static final String PLAYER_ATLAS = "Stick_figs.png";
-    public static final String LEVEL_ATLAS = "black.png";
+    public static final String TITLE_ATLAS = "Obstacles.png";
+    public static final String OBBY_ATLAS = "Obstacles_Sprites.png";
 
 
     public static BufferedImage GetSpriteAtlas(String fileName) {

@@ -1,5 +1,6 @@
 package entities;
 
+import gamestates.Playing;
 import levels.Level;
 import levels.LevelManager;
 import main.Game;
@@ -16,6 +17,7 @@ import java.io.InputStream;
 import static utilz.Constants.PlayerConstants.*;
 import static levels.LevelManager.*;
 import static utilz.HelpMethods.*;
+import static gamestates.Playing.*;
 
 public class Player extends Entity {
 
@@ -35,8 +37,9 @@ public class Player extends Entity {
     //Jumping.Gravity
     private float airSpeed = 0f;
     private float gravity = .15f * Game.SCALE;
-    private float jumpSpeed = -6.1f * Game.SCALE;
+    private float jumpSpeed = -6.5f * Game.SCALE;
     private boolean inAir = false;
+    private boolean inAirNotButton = false;
 
 
 
@@ -52,16 +55,10 @@ public class Player extends Entity {
 
 
     public void update() {
-        //isInAir();
         updatePos();
         updateHitbox();
         updateAnimationTick();
         setAnimation();
-
-        System.out.println("inAir: " + inAir);
-        System.out.println("Moving: " + moving);
-        System.out.println("MovingX: " + movingX);
-        System.out.println();
     }
 
 
@@ -71,7 +68,6 @@ public class Player extends Entity {
         else
             g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), Game.CHAR2_WIDTH, Game.CHAR2_HEIGHT, null);
         drawHitbox(g);
-
     }
 
     public void setDirection(int direction) {
@@ -184,6 +180,9 @@ public class Player extends Entity {
         }
         inAir = CanMoveHere(hitbox.x, hitbox.y + airSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
 
+//        if (levelManager.getButtons().length != 0) {
+//            inAirNotButton = CanMoveHere(hitbox.x, hitbox.y + airSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
+//        }
 
 
         if (left)
@@ -199,6 +198,7 @@ public class Player extends Entity {
             }
 
         }
+
         if (inAir) {
             if(CanMoveHere(hitbox.x, hitbox.y + airSpeed,(int) hitbox.width, (int) hitbox.height, lvlDat)){
                 hitbox.y += airSpeed;
@@ -215,19 +215,8 @@ public class Player extends Entity {
         }
 
         moving = true;
-//        System.out.println("inAir: " + inAir);
-//        System.out.println("Moving: " + moving);
-//        System.out.println("MovingX: " + movingX);
-//        System.out.println();
-
-//        System.out.println("Bottom Overlap: " + getBottomOverlap());
-//        System.out.println("Top overlap: " + getTopOverlap());
-//        System.out.println("Right overlap: " + getRightOverlap());
-//        System.out.println("Bottom overlap: " + getBottomOverlap());
 
     }
-
-
 
     private void updateXPos(float xSpeed) {
         Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
@@ -236,10 +225,16 @@ public class Player extends Entity {
             x = hitbox.x;
             movingX = true;
         }
-
     }
 
+
+
+    public void setPlayerAction(int newAction){this.playerAction = newAction;}
+
+
 }
+
+
 
 
 

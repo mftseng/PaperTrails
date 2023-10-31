@@ -8,6 +8,7 @@ import gamestates.Gamestate;
 import gamestates.Playing;
 import levels.LevelManager;
 
+import javax.sound.sampled.Line;
 import java.awt.*;
 
 import static java.awt.SystemColor.menu;
@@ -21,8 +22,12 @@ public class Game implements Runnable{
     public final static int GAME_WIDTH = (int)(1920 * SCALE);
     public final static int GAME_HEIGHT = (int)(1080 * SCALE);
     public final static int FLOOR_HEIGHT = GAME_HEIGHT - (int)(30*SCALE);
-    public final static int LINE_SIZE = (int) (SCALE *20);
+    public final static int LINE_SIZE = (int) (SCALE * 20);
     public final static int SPACE_BETWEEN_LINES = BLOCK_SIZE + LINE_SIZE;
+    public final static int JUMP_HEIGHT = LINE_SIZE*8;
+    public final static int BUTTON_HEIGHT = (int)(30 * SCALE);
+    public final static int BUTTON_WIDTH = (int)(60 * SCALE);
+    public final static int PRESSED_BUTTON_HEIGHT = (int)(10 * SCALE);
 
     public final static int CHAR1_WIDTH = (int) (140 * Game.SCALE);
     public final static int CHAR1_HEIGHT = (int) (130 * Game.SCALE);
@@ -41,6 +46,7 @@ public class Game implements Runnable{
     private final int UPS_SET = 200;
     private Player player1;
     private Player player2;
+
 
 
     public Game(){
