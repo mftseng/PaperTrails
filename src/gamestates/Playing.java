@@ -25,6 +25,8 @@ public class Playing extends State implements Statemethods{
 
     private void initClasses() {
         levelManager = new LevelManager(game);
+//        player1 = new Player(300f * Game.SCALE,Game.GAME_HEIGHT -100, 1, game);
+//        player2 = new Player(400f * Game.SCALE, Game.GAME_HEIGHT -100, 2, game);
         player1 = new Player(50f * Game.SCALE,50f * Game.SCALE, 1, game);
         player2 = new Player(250f * Game.SCALE, 50f * Game.SCALE, 2, game);
     }
@@ -49,12 +51,16 @@ public class Playing extends State implements Statemethods{
         levelManager.update();
         player1.update();
         player2.update();
+
 //        for (Obstacle obstacle : levelManager.getObstacles()){
-//            if (obstacle != null)
-//                obstacle.update();
+//            obstacle.update();
 //        }
 
     }
+
+
+
+
 
     @Override
     public void draw(Graphics g) {
@@ -63,6 +69,7 @@ public class Playing extends State implements Statemethods{
         player2.render(g);
         for (Obstacle obstacle : levelManager.getObstacles()){
             obstacle.render(g);
+            obstacle.update();
         }
 
     }

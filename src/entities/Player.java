@@ -38,7 +38,8 @@ public class Player extends Entity {
     private float airSpeed = 0f;
     private float gravity = .15f * Game.SCALE;
     private float jumpSpeed = -6.5f * Game.SCALE;
-    private boolean inAir = false;
+    private boolean inAir;
+    private int onButton;
     private boolean inAirNotButton = false;
 
 
@@ -59,6 +60,8 @@ public class Player extends Entity {
         updateHitbox();
         updateAnimationTick();
         setAnimation();
+        gravity();
+
     }
 
 
@@ -68,6 +71,8 @@ public class Player extends Entity {
         else
             g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), Game.CHAR2_WIDTH, Game.CHAR2_HEIGHT, null);
         drawHitbox(g);
+//        System.out.println(levelManager.getisThereButtons());
+//        System.out.println(levelManager.getButtons().length);
     }
 
     public void setDirection(int direction) {
@@ -99,7 +104,9 @@ public class Player extends Entity {
                 aniIndex = 0;
             }
         }
+
     }
+
 
     private void setAnimation() {
         if(movingX) {
@@ -169,6 +176,16 @@ public class Player extends Entity {
         this.down = down;
     }
 
+    private void gravity() {
+        Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
+        if (inAir) {
+            if(CanMoveHere(hitbox.x, hitbox.y + airSpeed,(int) hitbox.width, (int) hitbox.height, lvlDat)){
+
+                airSpeed += gravity;
+
+            }
+        }
+    }
     private void updatePos() {
         Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
         moving = false;
@@ -179,11 +196,6 @@ public class Player extends Entity {
             return;
         }
         inAir = CanMoveHere(hitbox.x, hitbox.y + airSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
-
-//        if (levelManager.getButtons().length != 0) {
-//            inAirNotButton = CanMoveHere(hitbox.x, hitbox.y + airSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
-//        }
-
 
         if (left)
             xSpeed -= playerSpeed;
@@ -196,10 +208,17 @@ public class Player extends Entity {
                 airSpeed = jumpSpeed;
                 inAir = true;
             }
-
         }
 
         if (inAir) {
+            if (levelManager.getisThereButtons()) {
+                onButton = CanMoveHereObject(hitbox.x, hitbox.y + 5, (int) hitbox.width, (int) hitbox.height, levelManager.getButtons());
+                System.out.println(onButton);
+                if (onButton != -1){
+                    levelManager.getLvlData()[levelManager.getLvlData().length - levelManager.getButtons().length * 2 + onButton].y++;
+                }
+            }
+
             if(CanMoveHere(hitbox.x, hitbox.y + airSpeed,(int) hitbox.width, (int) hitbox.height, lvlDat)){
                 hitbox.y += airSpeed;
                 y = hitbox.y;

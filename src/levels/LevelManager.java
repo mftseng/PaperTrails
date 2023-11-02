@@ -25,7 +25,7 @@ public class LevelManager {
     private static Rectangle[] lvlDat;
     private int levelChange = 1;
     private boolean LevelCreated = false;
-    private boolean isThereButtons;
+    private static boolean isThereButtons;
     private static Rectangle[] buttons;
     private static Obstacle[] obstacles;
 
@@ -48,9 +48,7 @@ public class LevelManager {
         return levelNum;
     }
     public boolean getisThereButtons(){return isThereButtons;}
-    public Rectangle[] getLvlData(){
-        return lvlDat;
-    }
+    public Rectangle[] getLvlData(){return lvlDat;}
     public Rectangle[] getButtons(){return buttons;}
     public Obstacle[] getObstacles(){return obstacles;}
 
@@ -63,15 +61,17 @@ public class LevelManager {
     public void render(Graphics g) {
         createLevel(g);
         drawLevel(g);
+//        System.out.println(obstacles.length);
     }
 
     public void createLevel1(Graphics g){
         lvlDat = new Rectangle[1];
         lvlDat[0] = new Rectangle(0, Game.GAME_HEIGHT/2 + Game.BLOCK_SIZE*2,Game.GAME_WIDTH,Game.GAME_HEIGHT/2);
         g.drawImage(animations[aniIndex], Game.BLOCK_SIZE*3, Game.BLOCK_SIZE, 700, 200, null);
-        obstacles = new Obstacle[1];
+
+        obstacles = new Obstacle[2];
         obstacles[0] = new Obstacle("PENCIL", 400, 400, game);
-        updateAnimationTick();
+        obstacles[1] = new Obstacle("GEM", 270, 400, game);
     }
 
     public void createLevel2(){
@@ -106,7 +106,7 @@ public class LevelManager {
 
     public void createLevel4(){
         isThereButtons = true;
-        lvlDat = new Rectangle[23];
+        lvlDat = new Rectangle[24];
         //Line1
         lvlDat[0] = new Rectangle(Game.BLOCK_SIZE*3, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2, Game.GAME_WIDTH - Game.BLOCK_SIZE*9, Game.LINE_SIZE);
         //Line2
@@ -125,25 +125,30 @@ public class LevelManager {
         //Left side box
         lvlDat[7] = new Rectangle (0,Game.FLOOR_HEIGHT - Game.SPACE_BETWEEN_LINES*2 - Game.BLOCK_SIZE*2,Game.SPACE_BETWEEN_LINES, Game.SPACE_BETWEEN_LINES);
 
-        //Moving Gate 1
-        lvlDat[8] = new Rectangle(Game.GAME_WIDTH - Game.BLOCK_SIZE*6,(Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*2)+(Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE),Game.LINE_SIZE,Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE);
-
-        //Moving Gate 2
-        lvlDat[9] = new Rectangle(0, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*3, Game.BLOCK_SIZE*2, Game.SPACE_BETWEEN_LINES + Game.LINE_SIZE);
-
         // bottom line
-        lvlDat[10] = new Rectangle(0, Game.FLOOR_HEIGHT, Game.GAME_WIDTH, (int)(Game.SCALE*30));
+        lvlDat[8] = new Rectangle(0, Game.FLOOR_HEIGHT, Game.GAME_WIDTH, (int)(Game.SCALE*30));
 
         // bottom right stairs
-        int index = 11;
+        int index = 9;
         for (int i = 0; i <= 3; i ++){
             for (int j = 0; j <= i; j++){
                 lvlDat[index] = new Rectangle(Game.GAME_WIDTH- Game.BLOCK_SIZE - Game.BLOCK_SIZE * j, ((Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4)+ Game.BLOCK_SIZE * i), Game.BLOCK_SIZE, Game.BLOCK_SIZE);
                 index ++;
             }
         }
-        lvlDat[21] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
-        lvlDat[22] = new Rectangle(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+
+        //bottom left line
+        lvlDat[19] = new Rectangle(0, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE, Game.BLOCK_SIZE*2, Game.LINE_SIZE);
+
+        //Moving Gate 1
+        lvlDat[20] = new Rectangle(Game.GAME_WIDTH - Game.BLOCK_SIZE*6,(Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*2)+(Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE),Game.LINE_SIZE,Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE);
+        //Moving Gate 2
+        lvlDat[21] = new Rectangle(0, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*3, Game.BLOCK_SIZE*2, Game.SPACE_BETWEEN_LINES + Game.LINE_SIZE);
+
+        //button for Moving Gate 1
+        lvlDat[22] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+        //button for Moving Gate 2
+        lvlDat[23] = new Rectangle(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
 
         //buttons
         buttons = new Rectangle[2];
@@ -157,6 +162,7 @@ public class LevelManager {
 
     public void drawLevel(Graphics g){
         //print function
+//        System.out.println(isThereButtons);
         for (int i = 0; i < lvlDat.length; i++) {
             g.fillRect(lvlDat[i].x, lvlDat[i].y, lvlDat[i].width, lvlDat[i].height);
         }
@@ -173,7 +179,7 @@ public class LevelManager {
 
 
     public void createLevel(Graphics g){
-        switch(levelChange){
+        switch(1){
             case 1:
                 if(!LevelCreated){
                     createLevel1(g);
@@ -193,15 +199,6 @@ public class LevelManager {
             case 4:
                 if(!LevelCreated){
                     createLevel4();
-
-//                    if (!CanMoveHere(Game.getPlayer(1).getHitbox().x,Game.getPlayer(1).getHitbox().y,(int)Game.getPlayer(1).getHitbox().width,(int)Game.getPlayer(1).getHitbox().height,buttons)
-//                        ||
-//                        !CanMoveHere(Game.getPlayer(2).getHitbox().x,Game.getPlayer(2).getHitbox().y,(int)Game.getPlayer(2).getHitbox().width,(int)Game.getPlayer(2).getHitbox().height,buttons)
-//                    ){
-//                        System.out.println("button pressed");
-//                    }
-
-
                 }
                 break;
             case 5:
