@@ -6,10 +6,16 @@ import levels.LevelManager;
 import main.Game;
 import entities.Obstacle;
 import org.w3c.dom.css.Rect;
+import utilz.LoadSave;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.Buffer;
+
 import static utilz.HelpMethods.*;
 import static levels.LevelManager.*;
 public class Playing extends State implements Statemethods{
@@ -17,7 +23,10 @@ public class Playing extends State implements Statemethods{
     private Player player2;
     private LevelManager levelManager;
     private boolean PlayerCollision = false;
-
+    private static boolean playerDying = false;
+    private static boolean GameOver;
+    private BufferedImage gemCNT;
+    Font gemFont;
     public Playing(Game game) {
         super(game);
         initClasses();
@@ -29,6 +38,10 @@ public class Playing extends State implements Statemethods{
 //        player2 = new Player(400f * Game.SCALE, Game.GAME_HEIGHT -100, 2, game);
         player1 = new Player(50f * Game.SCALE,50f * Game.SCALE, 1, game);
         player2 = new Player(250f * Game.SCALE, 50f * Game.SCALE, 2, game);
+        gemCNT = LoadSave.GetSpriteAtlas(LoadSave.OBBY_ATLAS);
+        importFont();
+
+
     }
 
     public void windowFocusLost(){
@@ -48,9 +61,19 @@ public class Playing extends State implements Statemethods{
 
     @Override
     public void update() {
-        levelManager.update();
-        player1.update();
-        player2.update();
+        if(Gamestate.state != Gamestate.LEVELCOMPLETE || Gamestate.state != Gamestate.GAMEOVER) {
+            levelManager.update();
+            player1.update();
+            player2.update();
+
+            if (player1.isDead()) {
+                player1.die();
+            }
+            if (player2.isDead()) {
+                player2.die();
+            }
+        }
+
 
 //        for (Obstacle obstacle : levelManager.getObstacles()){
 //            obstacle.update();
@@ -62,17 +85,52 @@ public class Playing extends State implements Statemethods{
 
 
 
+
     @Override
     public void draw(Graphics g) {
-        levelManager.render(g);
-        player1.render(g);
-        player2.render(g);
-        for (Obstacle obstacle : levelManager.getObstacles()){
-            obstacle.render(g);
-            obstacle.update();
+        if(Gamestate.state != Gamestate.LEVELCOMPLETE || Gamestate.state != Gamestate.GAMEOVER) {
+            levelManager.render(g);
+            player1.render(g);
+            player2.render(g);
+            for (Obstacle obstacle : levelManager.getObstacles()) {
+                obstacle.render(g);
+                obstacle.update();
+            }
+            BufferedImage gemImg = gemCNT.getSubimage(0, 0, 105, 75);
+            g.drawImage(gemImg, 0, 580, 105, 75, null);
+            g.setFont(gemFont);
+            g.setColor(Color.white);
+            g.drawString("x" + Player.getGemCounter(), 80, 620);
+        }
+        else if (Gamestate.state == Gamestate.LEVELCOMPLETE){
+            g.drawRect(0, 0, 800, 800);
+            g.setFont(gemFont);
+            g.setColor(Color.BLACK);
+            g.drawString("LEVEL COMPLETE", 80, 400);
+        }
+
+
+    }
+
+    private void importFont(){
+        try {
+            InputStream is = getClass().getResourceAsStream("/gemCounterFont.ttf");
+            Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            gemFont = baseFont.deriveFont(30f);
+        }
+        catch(FontFormatException e){
+            e.printStackTrace();
+        }
+        catch(IOException e){
+            e.printStackTrace();
         }
 
     }
+
+
+
+
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -167,6 +225,19 @@ public class Playing extends State implements Statemethods{
     public Player getPlayer2(){
         return player2;
     }
+
+    public static void setPlayerDying(boolean died){
+        playerDying = died;
+    }
+
+    public static boolean getPlayerDying(){
+        return playerDying;
+    }
+
+    public static void GameOver(){
+
+    }
+
 
 
 

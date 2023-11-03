@@ -14,19 +14,32 @@ public class Obstacle extends Entity {
     private BufferedImage[][] animations;
     private String type;
     private int aniIndex, aniTick, aniSpeed = 17;
-    private int xPos;
-    private int yPos;
+    private float xPos;
+    private float yPos;
     private int obbyAni;
     private Graphics g;
+    private int GemCounter = 0;
+
+    private LevelManager levelManager;
 
 
-    public Obstacle(String type, int xPos, int yPos, Game game) {
+
+    public Obstacle(String type, float xPos, float yPos, Game game) {
         super(xPos, yPos, 75, 46, game);
         this.xPos = xPos;
         this.yPos = yPos;
         this.type = type;
+        levelManager = new LevelManager(game);
         loadAnimations();
-        innitHitBox(xPos, yPos, 90 * Game.SCALE, 70 * Game.SCALE);
+        if (type.equals("GEM")) {
+            innitHitBox(xPos +50f, yPos +50f, 50 * Game.SCALE, 15 * Game.SCALE);
+        }
+        else if (type.equals("FIRE")){
+            innitHitBox(xPos + 150f, yPos + 80f, 45 * Game.SCALE, 30 * Game.SCALE);
+        }
+        else if (type.equals("PENCIL")){
+            innitHitBox(xPos + 150f, yPos + 90f, 80 * Game.SCALE, 100 * Game.SCALE);
+        }
 
     }
 
@@ -41,23 +54,22 @@ public class Obstacle extends Entity {
 
         for (int i = 0; i < animations.length; i++) {
             for (int j = 0; j < animations[i].length; j++) {
-                animations[i][j] = img.getSubimage(95 * j, 75 * i, 95, 75);
+                animations[i][j] = img.getSubimage(105 * j, 75 * i, 105, 75);
             }
         }
     }
 
     public void render(Graphics g) {
-        if (obstacleCollision(game.getPlayer(1)) || obstacleCollision(game.getPlayer(2))) {
-            CollisionResult(game.getPlayer(1));
-            CollisionResult(game.getPlayer(2));
-        } else if (type.equals("GEM")) {
-            g.drawImage(animations[GEM][aniIndex], xPos, yPos, 75, 46, null);
+        if (type.equals("GONE")) {
+            g.drawImage(animations[GONE][aniIndex], (int) xPos, (int) yPos, 0, 0, null);}
+        else if (type.equals("GEM")) {
+            g.drawImage(animations[GEM][aniIndex], (int)xPos, (int)yPos, 75, 46, null);
         } else if (type.equals("FIRE")) {
-            g.drawImage(animations[FIRE][aniIndex], xPos, yPos, 75, 46, null);
+            g.drawImage(animations[FIRE][aniIndex], (int)xPos, (int)yPos, 75, 46, null);
         } else if (type.equals("PENCIL")) {
-            g.drawImage(animations[PENCIL][aniIndex], xPos, yPos, 95, 75, null);
+            g.drawImage(animations[PENCIL][aniIndex], (int)xPos, (int)yPos, 95, 75, null);
         } else {
-            g.drawImage(animations[GONE][aniIndex], xPos, yPos, 0, 0, null);
+            g.drawImage(animations[GONE][aniIndex], (int)xPos, (int)yPos, 0, 0, null);
         }
         drawHitbox(g);
     }
@@ -80,27 +92,20 @@ public class Obstacle extends Entity {
 
     }
 
-    private boolean obstacleCollision(Player player) {
-        if (player.getHitbox().x + player.getHitbox().width >= this.hitbox.x || player.getHitbox().x < this.hitbox.x + width
-                || player.getHitbox().y < this.hitbox.y || player.getHitbox().y + player.getHitbox().height >= this.hitbox.y) {
-            return true;
-        } else {
-            return false;
-        }
 
 
 
+
+    public String getType() {
+        return type;
     }
 
-    private void CollisionResult(Player player) {
-        if (obstacleCollision(player)) {
-            if (type.equals("GEM"))
-                g.drawImage(animations[GONE][aniIndex], xPos, yPos, 0, 0, null);
-            else if (type.equals("FIRE") || type.equals("PENCIL"))
-                player.setPlayerAction(GONE);
-            else
-                return;
-        }
+    public void setType(String type){
+        this.type = type;
+    }
+
+    public void setX(int x){
+        this.xPos = x;
     }
 }
 

@@ -5,12 +5,17 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 
 import entities.Obstacle;
 import main.Game;
 import org.w3c.dom.css.Rect;
 import utilz.LoadSave;
+
+import javax.swing.*;
 
 import static levels.Level.*;
 import static utilz.Constants.PlayerConstants.GetSpriteAmount;
@@ -28,6 +33,9 @@ public class LevelManager {
     private static boolean isThereButtons;
     private static Rectangle[] buttons;
     private static Obstacle[] obstacles;
+    Font gemCounterFont;
+    private int gemCounter = 0;
+
 
 
 
@@ -51,6 +59,7 @@ public class LevelManager {
     public Rectangle[] getLvlData(){return lvlDat;}
     public Rectangle[] getButtons(){return buttons;}
     public Obstacle[] getObstacles(){return obstacles;}
+    public boolean getAreThereObstacles(){return (obstacles.length > 0);}
 
 
     public void updateLevel(){
@@ -61,17 +70,23 @@ public class LevelManager {
     public void render(Graphics g) {
         createLevel(g);
         drawLevel(g);
+        g.setFont(gemCounterFont);
+        g.setColor(Color.BLACK);
+        g.drawString("" + gemCounter, Game.GAME_WIDTH/2, 200);
+        updateAnimationTick();
 //        System.out.println(obstacles.length);
     }
 
     public void createLevel1(Graphics g){
         lvlDat = new Rectangle[1];
         lvlDat[0] = new Rectangle(0, Game.GAME_HEIGHT/2 + Game.BLOCK_SIZE*2,Game.GAME_WIDTH,Game.GAME_HEIGHT/2);
-        g.drawImage(animations[aniIndex], Game.BLOCK_SIZE*3, Game.BLOCK_SIZE, 700, 200, null);
 
-        obstacles = new Obstacle[2];
-        obstacles[0] = new Obstacle("PENCIL", 400, 400, game);
+        obstacles = new Obstacle[3];
+        obstacles[0] = new Obstacle("PENCIL", 700, 400, game);
         obstacles[1] = new Obstacle("GEM", 270, 400, game);
+        obstacles[2] = new Obstacle("PENCIL", 570, 430, game);
+
+        LevelCreated = true;
     }
 
     public void createLevel2(){
@@ -179,11 +194,23 @@ public class LevelManager {
 
 
     public void createLevel(Graphics g){
+        try{
+            InputStream is = getClass().getResourceAsStream("/gemCounterFont.ttf");
+            gemCounterFont = Font.createFont(Font.TRUETYPE_FONT, is);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (FontFormatException e) {
+            throw new RuntimeException(e);
+        }
+
+
         switch(1){
             case 1:
                 if(!LevelCreated){
                     createLevel1(g);
+                    g.drawImage(animations[aniIndex], Game.BLOCK_SIZE*3, Game.BLOCK_SIZE, 700, 200, null);
                 }
+                g.drawImage(animations[aniIndex], Game.BLOCK_SIZE*3, Game.BLOCK_SIZE, 700, 200, null);
 
                 break;
             case 2:

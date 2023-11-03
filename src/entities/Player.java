@@ -1,23 +1,16 @@
 package entities;
 
-import gamestates.Playing;
-import levels.Level;
+import gamestates.Gamestate;
+import gamestates.Playerstate;
 import levels.LevelManager;
 import main.Game;
-import main.GamePanel;
-import utilz.HelpMethods;
 import utilz.LoadSave;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static utilz.Constants.PlayerConstants.*;
-import static levels.LevelManager.*;
 import static utilz.HelpMethods.*;
-import static gamestates.Playing.*;
 
 public class Player extends Entity {
 
@@ -42,6 +35,15 @@ public class Player extends Entity {
     private int onButton;
     private boolean inAirNotButton = false;
 
+    private int onObstacle;
+
+    private boolean died = false;
+    private boolean gotPencil = false;
+
+
+    private Playerstate playerstate = Playerstate.ACTIVE;
+    private static int gemCounter = 0;
+
 
 
     public Player(float x, float y, int playerNum, Game game) {
@@ -56,16 +58,40 @@ public class Player extends Entity {
 
 
     public void update() {
-        updatePos();
-        updateHitbox();
-        updateAnimationTick();
-        setAnimation();
-        gravity();
+        if (playerstate == Playerstate.ACTIVE) {
+            updatePos();
+            updateHitbox();
+            updateAnimationTick();
+            setAnimation();
+            gravity();
+        }
+        else if(playerstate == Playerstate.DYING) {
+            playerAction = DEATH;
+            aniTick++;
+            if (aniTick > aniSpeed){
+                aniTick = 0;
+                if (aniIndex < 6)
+                    aniIndex ++;
+                else
+                    playerstate = Playerstate.DEAD;
+            }
 
+        }
+    }
+
+    public void die() {
+        if (playerstate == Playerstate.ACTIVE) {
+            playerstate = Playerstate.DYING;
+
+        }
     }
 
 
+
+
+
     public void render(Graphics g) {
+        System.out.println("Gems: " + gemCounter);
         if (this.playerNum == 1)
             g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), Game.CHAR1_WIDTH, Game.CHAR1_HEIGHT, null);
         else
@@ -74,6 +100,7 @@ public class Player extends Entity {
 //        System.out.println(levelManager.getisThereButtons());
 //        System.out.println(levelManager.getButtons().length);
     }
+
 
     public void setDirection(int direction) {
 
@@ -102,6 +129,8 @@ public class Player extends Entity {
             aniIndex++;
             if (aniIndex >= GetSpriteAmount(playerAction)) {
                 aniIndex = 0;
+
+
             }
         }
 
@@ -121,6 +150,14 @@ public class Player extends Entity {
                 playerAction = JUMPING1;
             } else {
                 playerAction = JUMPING2;
+            }
+        }
+        else if (died){
+            playerAction = DEATH;
+            if (this.playerNum == 1)
+                Gamestate.state = Gamestate.PLAYER1DEAD;
+            else if (this.playerNum == 2){
+                Gamestate.state = Gamestate.PLAYER2DEAD;
             }
         }
         else if (playerNum == 1)
@@ -219,6 +256,24 @@ public class Player extends Entity {
                 }
             }
 
+            if (levelManager.getAreThereObstacles()){
+                onObstacle = onObstacle(hitbox.x, hitbox.y, (int)hitbox.width, (int)hitbox.height, levelManager.getObstacles());
+                if (onObstacle != -1){
+                    if (levelManager.getObstacles()[onObstacle].getType().equals("GEM")){
+                        levelManager.getObstacles()[onObstacle].setType("GONE");
+                        gemCounter++;
+                        levelManager.getObstacles()[onObstacle].setX(-10);
+                    }
+                    else if(levelManager.getObstacles()[onObstacle].getType().equals("FIRE")){
+                        died = true;
+
+                    }
+                    else if(levelManager.getObstacles()[onObstacle].getType().equals("PENCIL")){
+                        Gamestate.state = Gamestate.LEVELCOMPLETE;
+                    }
+                }
+            }
+
             if(CanMoveHere(hitbox.x, hitbox.y + airSpeed,(int) hitbox.width, (int) hitbox.height, lvlDat)){
                 hitbox.y += airSpeed;
                 y = hitbox.y;
@@ -249,6 +304,20 @@ public class Player extends Entity {
 
 
     public void setPlayerAction(int newAction){this.playerAction = newAction;}
+
+    public int getOnObstacle(){return onObstacle;}
+
+    public boolean isDead(){
+        return died;
+    }
+
+    public static int getGemCounter(){
+        return gemCounter;
+    }
+
+
+
+
 
 
 }

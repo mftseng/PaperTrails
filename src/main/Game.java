@@ -3,9 +3,7 @@ package main;
 
 import entities.Player;
 
-import gamestates.GMenu;
-import gamestates.Gamestate;
-import gamestates.Playing;
+import gamestates.*;
 import levels.LevelManager;
 
 import javax.sound.sampled.Line;
@@ -16,6 +14,8 @@ import static java.awt.SystemColor.menu;
 public class Game implements Runnable{
     private Playing playing;
     private GMenu menu;
+
+
     private LevelManager levelManager;
     public final static float SCALE = .6f;
     public final static int BLOCK_SIZE = (int)(120 * SCALE);
@@ -61,6 +61,7 @@ public class Game implements Runnable{
     private void initClasses(){
         menu = new GMenu(this);
         playing = new Playing(this);
+
 
     }
     private void startGameLoop(){
@@ -168,5 +169,6 @@ public class Game implements Runnable{
 
 
 
-}
 
+
+}
