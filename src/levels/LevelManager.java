@@ -156,9 +156,9 @@ public class LevelManager {
         lvlDat[19] = new Rectangle(0, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE, Game.BLOCK_SIZE*2, Game.LINE_SIZE);
 
         //Moving Gate 1
-        lvlDat[20] = new Rectangle(Game.GAME_WIDTH - Game.BLOCK_SIZE*6,(Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*2)+(Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE),Game.LINE_SIZE,Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE);
+        lvlDat[20] = new Rectangle(Game.GAME_WIDTH - Game.BLOCK_SIZE*6,(Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*2)+(Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE),Game.LINE_SIZE,Game.BLOCK_SIZE*2);
         //Moving Gate 2
-        lvlDat[21] = new Rectangle(0, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*3, Game.BLOCK_SIZE*2, Game.SPACE_BETWEEN_LINES + Game.LINE_SIZE);
+        lvlDat[21] = new Rectangle(0, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*3, Game.BLOCK_SIZE*2, Game.BLOCK_SIZE*3 + Game.LINE_SIZE*2);
 
         //button for Moving Gate 1
         lvlDat[22] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
@@ -173,6 +173,7 @@ public class LevelManager {
 
         LevelCreated = true;
     }
+
 
 
     public void drawLevel(Graphics g){
@@ -194,17 +195,8 @@ public class LevelManager {
 
 
     public void createLevel(Graphics g){
-        try{
-            InputStream is = getClass().getResourceAsStream("/gemCounterFont.ttf");
-            gemCounterFont = Font.createFont(Font.TRUETYPE_FONT, is);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (FontFormatException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        switch(1){
+//
+        switch(4){
             case 1:
                 if(!LevelCreated){
                     createLevel1(g);

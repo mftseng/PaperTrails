@@ -37,7 +37,7 @@ public class Playing extends State implements Statemethods{
 //        player1 = new Player(300f * Game.SCALE,Game.GAME_HEIGHT -100, 1, game);
 //        player2 = new Player(400f * Game.SCALE, Game.GAME_HEIGHT -100, 2, game);
         player1 = new Player(50f * Game.SCALE,50f * Game.SCALE, 1, game);
-        player2 = new Player(250f * Game.SCALE, 50f * Game.SCALE, 2, game);
+        player2 = new Player(50f * Game.SCALE, 50f * Game.SCALE, 2, game);
         gemCNT = LoadSave.GetSpriteAtlas(LoadSave.OBBY_ATLAS);
         importFont();
 
@@ -92,15 +92,17 @@ public class Playing extends State implements Statemethods{
             levelManager.render(g);
             player1.render(g);
             player2.render(g);
-            for (Obstacle obstacle : levelManager.getObstacles()) {
-                obstacle.render(g);
-                obstacle.update();
+            if(levelManager.getObstacles() != null) {
+                for (Obstacle obstacle : levelManager.getObstacles()) {
+                    obstacle.render(g);
+                    obstacle.update();
+                }
             }
             BufferedImage gemImg = gemCNT.getSubimage(0, 0, 105, 75);
-            g.drawImage(gemImg, 0, 580, 105, 75, null);
+            g.drawImage(gemImg, 10, 590, 105, 80, null);
             g.setFont(gemFont);
-            g.setColor(Color.white);
-            g.drawString("x" + Player.getGemCounter(), 80, 620);
+            g.setColor(Color.BLACK);
+            g.drawString("x" + Player.getGemCounter(), 1100, 27);
         }
         else if (Gamestate.state == Gamestate.LEVELCOMPLETE){
             g.drawRect(0, 0, 800, 800);

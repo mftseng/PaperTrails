@@ -32,7 +32,6 @@ public class Player extends Entity {
     private float gravity = .15f * Game.SCALE;
     private float jumpSpeed = -6.5f * Game.SCALE;
     private boolean inAir;
-    private int onButton;
     private boolean inAirNotButton = false;
 
     private int onObstacle;
@@ -44,6 +43,8 @@ public class Player extends Entity {
     private Playerstate playerstate = Playerstate.ACTIVE;
     private static int gemCounter = 0;
 
+    private int onButton = -1, tempOnButton ;
+    private boolean buttonPressedState, buttonPressed;
 
 
     public Player(float x, float y, int playerNum, Game game) {
@@ -63,7 +64,7 @@ public class Player extends Entity {
             updateHitbox();
             updateAnimationTick();
             setAnimation();
-            gravity();
+
         }
         else if(playerstate == Playerstate.DYING) {
             playerAction = DEATH;
@@ -91,7 +92,7 @@ public class Player extends Entity {
 
 
     public void render(Graphics g) {
-        System.out.println("Gems: " + gemCounter);
+//        System.out.println("Gems: " + gemCounter);
         if (this.playerNum == 1)
             g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), Game.CHAR1_WIDTH, Game.CHAR1_HEIGHT, null);
         else
@@ -145,7 +146,7 @@ public class Player extends Entity {
                 playerAction = RUNNING2;
             }
         }
-        else if (!movingX && moving){
+        else if (inAir){
             if (playerNum == 1) {
                 playerAction = JUMPING1;
             } else {
@@ -213,26 +214,93 @@ public class Player extends Entity {
         this.down = down;
     }
 
-    private void gravity() {
+    private void updatePos() {
         Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
-        if (inAir) {
-            if(CanMoveHere(hitbox.x, hitbox.y + airSpeed,(int) hitbox.width, (int) hitbox.height, lvlDat)){
+        if (lvlDat != null) {
+            inAir = CanMoveHere(hitbox.x, hitbox.y + airSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
+            if (!inAir){
+                if(CanMoveHere(hitbox.x, hitbox.y + 5,(int) hitbox.width, (int) hitbox.height, lvlDat)){
+                    inAir = true;
+                    airSpeed = 0;
+                    hitbox.y += 1;
+                    y= hitbox.y;
+                }
+            }
+//            System.out.println("OG: " + OriginalObjectHeight);
+//            System.out.println(onButton);
 
-                airSpeed += gravity;
+
+
+        }
+        if (levelManager.getObstacles() != null){
+        if (levelManager.getAreThereObstacles()) {
+            onObstacle = onObstacle(hitbox.x, hitbox.y, (int) hitbox.width, (int) hitbox.height, levelManager.getObstacles());
+            if (onObstacle != -1) {
+                if (levelManager.getObstacles()[onObstacle].getType().equals("GEM")) {
+                    levelManager.getObstacles()[onObstacle].setType("GONE");
+                    gemCounter++;
+                    levelManager.getObstacles()[onObstacle].setX(-10);
+                } else if (levelManager.getObstacles()[onObstacle].getType().equals("FIRE")) {
+                    died = true;
+
+                } else if (levelManager.getObstacles()[onObstacle].getType().equals("PENCIL")) {
+                    Gamestate.state = Gamestate.LEVELCOMPLETE;
+                }
+            }
+        }
+        }
+
+        if (levelManager.getButtons() != null) {
+            onButton = CanMoveHereObject(hitbox.x, hitbox.y + 10, (int) hitbox.width, (int) hitbox.height, levelManager.getButtons());
+            int GateStartingIndex = levelManager.getLvlData().length - levelManager.getButtons().length * 2;
+            if (onButton > -1) {
+                if (levelManager.getLvlData()[GateStartingIndex + onButton].height != 0) {
+                    //move level object
+                    levelManager.getLvlData()[GateStartingIndex + onButton].height-=2;
+
+                    if (!buttonPressedState) {
+                        levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + onButton].y += (int) (20 * Game.SCALE);
+                        levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + onButton].height = Game.PRESSED_BUTTON_HEIGHT;
+                        levelManager.getButtons()[onButton].y = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + onButton ].y;
+                        levelManager.getButtons()[onButton].height = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + onButton].height;
+                        tempOnButton = onButton;
+                        buttonPressedState = true;
+
+                    }
+
+                }
+            } else {
+                for (int i = 0; i < levelManager.getButtons().length; i++) {
+                    if (CanMoveHere(levelManager.getLvlData()[GateStartingIndex + i].x, levelManager.getLvlData()[GateStartingIndex + i].height + 1, 1, 1, lvlDat)) {
+                        levelManager.getLvlData()[GateStartingIndex + onButton + 1 + i].height++;
+                        System.out.println(i);
+                    }
+
+                }
+                if (buttonPressedState && !inAir) {
+                    levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].y -= (int)(20 * Game.SCALE);
+                    levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].height = Game.BUTTON_HEIGHT;
+                    levelManager.getButtons()[tempOnButton].y = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].y;
+                    levelManager.getButtons()[tempOnButton].height = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].height;
+                    System.out.println(tempOnButton);
+                    buttonPressedState = false;
+                }
+                System.out.println(buttonPressed);
 
             }
         }
-    }
-    private void updatePos() {
-        Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
-        moving = false;
-        movingX = false;
+
+
+
+
 
         float xSpeed = 0;
         if (!left && !right && !up && !inAir) {
             return;
         }
-        inAir = CanMoveHere(hitbox.x, hitbox.y + airSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
+
+
+        movingX = false;
 
         if (left)
             xSpeed -= playerSpeed;
@@ -247,32 +315,8 @@ public class Player extends Entity {
             }
         }
 
+
         if (inAir) {
-            if (levelManager.getisThereButtons()) {
-                onButton = CanMoveHereObject(hitbox.x, hitbox.y + 5, (int) hitbox.width, (int) hitbox.height, levelManager.getButtons());
-                System.out.println(onButton);
-                if (onButton != -1){
-                    levelManager.getLvlData()[levelManager.getLvlData().length - levelManager.getButtons().length * 2 + onButton].y++;
-                }
-            }
-
-            if (levelManager.getAreThereObstacles()){
-                onObstacle = onObstacle(hitbox.x, hitbox.y, (int)hitbox.width, (int)hitbox.height, levelManager.getObstacles());
-                if (onObstacle != -1){
-                    if (levelManager.getObstacles()[onObstacle].getType().equals("GEM")){
-                        levelManager.getObstacles()[onObstacle].setType("GONE");
-                        gemCounter++;
-                        levelManager.getObstacles()[onObstacle].setX(-10);
-                    }
-                    else if(levelManager.getObstacles()[onObstacle].getType().equals("FIRE")){
-                        died = true;
-
-                    }
-                    else if(levelManager.getObstacles()[onObstacle].getType().equals("PENCIL")){
-                        Gamestate.state = Gamestate.LEVELCOMPLETE;
-                    }
-                }
-            }
 
             if(CanMoveHere(hitbox.x, hitbox.y + airSpeed,(int) hitbox.width, (int) hitbox.height, lvlDat)){
                 hitbox.y += airSpeed;
@@ -287,8 +331,6 @@ public class Player extends Entity {
                 updateXPos(xSpeed);
 
         }
-
-        moving = true;
 
     }
 
