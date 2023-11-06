@@ -174,6 +174,46 @@ public class LevelManager {
         LevelCreated = true;
     }
 
+    public void createLevel5(Graphics g){
+        lvlDat = new Rectangle[1];
+
+        lvlDat[0] = new Rectangle(0, Game.FLOOR_HEIGHT, Game.GAME_WIDTH, (int)(Game.SCALE*30));
+
+        obstacles = new Obstacle[3];
+        obstacles[0] = new Obstacle("PENCIL", 700, 400, game);
+        obstacles[1] = new Obstacle("GEM", 270, 400, game);
+        obstacles[2] = new Obstacle("PENCIL", 570, 430, game);
+
+        LevelCreated = true;
+    }
+
+    public void createLevel6(Graphics g){
+        lvlDat = new Rectangle[5];
+        // bottom line
+        lvlDat[0] = new Rectangle(0, Game.FLOOR_HEIGHT, Game.GAME_WIDTH, (int)(Game.SCALE*80));
+        //top line
+        lvlDat[1] = new Rectangle(0, Game.SPACE_BETWEEN_LINES*2, Game.GAME_WIDTH - Game.BLOCK_SIZE *3, Game.LINE_SIZE);
+        //top right line
+        lvlDat[2] = new Rectangle(Game.GAME_WIDTH - Game.BLOCK_SIZE/2, Game.SPACE_BETWEEN_LINES*2, Game.BLOCK_SIZE/2, Game.LINE_SIZE);
+        //Right vertical line
+        lvlDat[3] = new Rectangle(Game.GAME_WIDTH - Game.BLOCK_SIZE *3,Game.SPACE_BETWEEN_LINES*2, Game.LINE_SIZE, Game.BLOCK_SIZE*3);
+        //Middle Line
+        lvlDat[4] = new Rectangle(Game.BLOCK_SIZE*3, Game.SPACE_BETWEEN_LINES*2 + Game.BLOCK_SIZE*3, Game.GAME_WIDTH - Game.BLOCK_SIZE*6, Game.LINE_SIZE);
+
+        //button for Moving Gate 1
+        lvlDat[22] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+        //button for Moving Gate 2
+        lvlDat[23] = new Rectangle(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+
+        //buttons
+        buttons = new Rectangle[2];
+        buttons[0] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+        buttons[1] = new Rectangle(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+
+
+        LevelCreated = true;
+    }
+
 
 
     public void drawLevel(Graphics g){
@@ -196,7 +236,7 @@ public class LevelManager {
 
     public void createLevel(Graphics g){
 //
-        switch(4){
+        switch(6){
             case 1:
                 if(!LevelCreated){
                     createLevel1(g);
@@ -221,8 +261,14 @@ public class LevelManager {
                 }
                 break;
             case 5:
+                if(!LevelCreated){
+                    createLevel5(g);
+                }
                 break;
             case 6:
+                if(!LevelCreated){
+                    createLevel6(g);
+                }
                 break;
             case 7:
                 break;
