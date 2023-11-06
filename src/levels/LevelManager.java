@@ -133,15 +133,15 @@ public class LevelManager {
         //Line5
         lvlDat[4] = new Rectangle(0, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*3, Game.BLOCK_SIZE*2, Game.LINE_SIZE);
         //Line6
-        lvlDat[5] = new Rectangle(Game.SPACE_BETWEEN_LINES*2,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE - Game.SPACE_BETWEEN_LINES*5,Game.BLOCK_SIZE*9,Game.BLOCK_SIZE/3);
+        lvlDat[5] = new Rectangle(Game.SPACE_BETWEEN_LINES*2,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE - Game.SPACE_BETWEEN_LINES*5,Game.BLOCK_SIZE*7,Game.LINE_SIZE);
         //Line 7
-        lvlDat[6] = new Rectangle(Game.BLOCK_SIZE*13,Game.SPACE_BETWEEN_LINES + Game.LINE_SIZE *3,Game.BLOCK_SIZE*9,Game.BLOCK_SIZE/3);
+        lvlDat[6] = new Rectangle(Game.BLOCK_SIZE*11,Game.SPACE_BETWEEN_LINES + Game.LINE_SIZE *3,Game.BLOCK_SIZE*9,Game.BLOCK_SIZE/3);
 
         //Left side box
         lvlDat[7] = new Rectangle (0,Game.FLOOR_HEIGHT - Game.SPACE_BETWEEN_LINES*2 - Game.BLOCK_SIZE*2,Game.SPACE_BETWEEN_LINES, Game.SPACE_BETWEEN_LINES);
 
         // bottom line
-        lvlDat[8] = new Rectangle(0, Game.FLOOR_HEIGHT, Game.GAME_WIDTH, (int)(Game.SCALE*30));
+        lvlDat[8] = new Rectangle(0, Game.FLOOR_HEIGHT, Game.GAME_WIDTH, (int)(Game.SCALE*80));
 
         // bottom right stairs
         int index = 9;

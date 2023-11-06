@@ -271,11 +271,9 @@ public class Player extends Entity {
                 }
             } else {
                 for (int i = 0; i < levelManager.getButtons().length; i++) {
-                    if (CanMoveHere(levelManager.getLvlData()[GateStartingIndex + i].x, levelManager.getLvlData()[GateStartingIndex + i].height + 1, 1, 1, lvlDat)) {
+                    if (CanMoveHeretest(levelManager.getLvlData()[GateStartingIndex + i].x, levelManager.getLvlData()[GateStartingIndex + i].height + 1, 1, 1, lvlDat)) {
                         levelManager.getLvlData()[GateStartingIndex + onButton + 1 + i].height++;
-                        System.out.println(i);
                     }
-
                 }
                 if (buttonPressedState && !inAir) {
                     levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].y -= (int)(20 * Game.SCALE);
