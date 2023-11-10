@@ -32,7 +32,7 @@ public class Obstacle extends Entity {
         levelManager = new LevelManager(game);
         loadAnimations();
         if (type.equals("GEM")) {
-            innitHitBox(xPos +50f, yPos +50f, 50 * Game.SCALE, 15 * Game.SCALE);
+            innitHitBox(xPos + 90f, yPos +50f, 50 * Game.SCALE, 15 * Game.SCALE);
         }
         else if (type.equals("FIRE")){
             innitHitBox(xPos + 150f, yPos + 80f, 45 * Game.SCALE, 30 * Game.SCALE);

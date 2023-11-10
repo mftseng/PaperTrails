@@ -82,7 +82,7 @@ public class LevelManager {
         lvlDat[0] = new Rectangle(0, Game.GAME_HEIGHT/2 + Game.BLOCK_SIZE*2,Game.GAME_WIDTH,Game.GAME_HEIGHT/2);
 
         obstacles = new Obstacle[3];
-        obstacles[0] = new Obstacle("PENCIL", 700, 400, game);
+        obstacles[0] = new Obstacle("FIRE", 700, 400, game);
         obstacles[1] = new Obstacle("GEM", 270, 400, game);
         obstacles[2] = new Obstacle("PENCIL", 570, 430, game);
 
@@ -182,13 +182,13 @@ public class LevelManager {
         obstacles = new Obstacle[3];
         obstacles[0] = new Obstacle("PENCIL", 700, 400, game);
         obstacles[1] = new Obstacle("GEM", 270, 400, game);
-        obstacles[2] = new Obstacle("PENCIL", 570, 430, game);
+        obstacles[2] = new Obstacle("FIRE", 570, 430, game);
 
         LevelCreated = true;
     }
 
     public void createLevel6(Graphics g){
-        lvlDat = new Rectangle[5];
+        lvlDat = new Rectangle[6];
         // bottom line
         lvlDat[0] = new Rectangle(0, Game.FLOOR_HEIGHT, Game.GAME_WIDTH, (int)(Game.SCALE*80));
         //top line
@@ -196,20 +196,34 @@ public class LevelManager {
         //top right line
         lvlDat[2] = new Rectangle(Game.GAME_WIDTH - Game.BLOCK_SIZE/2, Game.SPACE_BETWEEN_LINES*2, Game.BLOCK_SIZE/2, Game.LINE_SIZE);
         //Right vertical line
-        lvlDat[3] = new Rectangle(Game.GAME_WIDTH - Game.BLOCK_SIZE *3,Game.SPACE_BETWEEN_LINES*2, Game.LINE_SIZE, Game.BLOCK_SIZE*3);
+        lvlDat[3] = new Rectangle(Game.GAME_WIDTH - Game.BLOCK_SIZE *3,Game.SPACE_BETWEEN_LINES*2, Game.LINE_SIZE, Game.BLOCK_SIZE*3 + Game.LINE_SIZE);
         //Middle Line
         lvlDat[4] = new Rectangle(Game.BLOCK_SIZE*3, Game.SPACE_BETWEEN_LINES*2 + Game.BLOCK_SIZE*3, Game.GAME_WIDTH - Game.BLOCK_SIZE*6, Game.LINE_SIZE);
-
         //button for Moving Gate 1
-        lvlDat[22] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
-        //button for Moving Gate 2
-        lvlDat[23] = new Rectangle(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+        lvlDat[5] = new Rectangle(0, Game.FLOOR_HEIGHT, Game.GAME_WIDTH, (int)(Game.SCALE*80));
+        obstacles = new Obstacle[3];
+        obstacles[0] = new Obstacle("PENCIL", 700, 400, game);
+        obstacles[1] = new Obstacle("GEM", 270, 400, game);
+        obstacles[2] = new Obstacle("FIRE", 570, 430, game);
 
-        //buttons
-        buttons = new Rectangle[2];
-        buttons[0] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
-        buttons[1] = new Rectangle(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+        LevelCreated = true;
+    }
 
+    public void createLevel7(Graphics g){
+        lvlDat = new Rectangle[9];
+        // bottom line
+        lvlDat[0] = new Rectangle(0, Game.FLOOR_HEIGHT, Game.GAME_WIDTH, (int)(Game.SCALE*80));
+        // line on top of bottom line
+        lvlDat[1] = new Rectangle(0, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2, Game.GAME_WIDTH - Game.BLOCK_SIZE*2 + Game.LINE_SIZE, Game.LINE_SIZE);
+
+        //Gate 1
+        lvlDat[2] = new Rectangle(Game.SPACE_BETWEEN_LINES*2, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
+        lvlDat[3] = new Rectangle(Game.SPACE_BETWEEN_LINES*4, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
+        lvlDat[4] = new Rectangle(Game.SPACE_BETWEEN_LINES*6, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
+        lvlDat[5] = new Rectangle(Game.SPACE_BETWEEN_LINES*8, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
+        lvlDat[6] = new Rectangle(Game.SPACE_BETWEEN_LINES*10, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
+        lvlDat[7] = new Rectangle(Game.SPACE_BETWEEN_LINES*12, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
+        lvlDat[8] = new Rectangle(Game.SPACE_BETWEEN_LINES*14, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
 
         LevelCreated = true;
     }
@@ -236,7 +250,7 @@ public class LevelManager {
 
     public void createLevel(Graphics g){
 //
-        switch(6){
+        switch(4){
             case 1:
                 if(!LevelCreated){
                     createLevel1(g);
@@ -271,6 +285,9 @@ public class LevelManager {
                 }
                 break;
             case 7:
+                if(!LevelCreated){
+                    createLevel7(g);
+                }
                 break;
             case 8:
                 break;
