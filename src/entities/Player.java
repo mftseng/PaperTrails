@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import static utilz.Constants.PlayerConstants.*;
 import static utilz.HelpMethods.*;
 
-public class Player extends Entity {
+public class Player extends MovingEntities {
 
     private int aniTick, aniIndex, aniSpeed = 17;
     private final int playerNum;
@@ -24,7 +24,7 @@ public class Player extends Entity {
     private float playerSpeed = 2.0f;
     private LevelManager levelManager;
 
-    private float xDrawOffset = 60 * Game.SCALE;
+    private float xDrawOffset = 75 * Game.SCALE;
     private float yDrawOffset = 30 * Game.SCALE;
 
     //Jumping.Gravity
@@ -52,7 +52,7 @@ public class Player extends Entity {
         this.playerNum = playerNum;
         loadAnimations();
         levelManager = new LevelManager(game);
-        innitHitBox(x, y, 58 * Game.SCALE, 95 * Game.SCALE);
+        innitHitBox(x, y, 43 * Game.SCALE, 95 * Game.SCALE);
 
 
     }
@@ -226,12 +226,8 @@ public class Player extends Entity {
                     y= hitbox.y;
                 }
             }
-//            System.out.println("OG: " + OriginalObjectHeight);
-//            System.out.println(onButton);
-
-
-
         }
+
         if (levelManager.getObstacles() != null){
         if (levelManager.getAreThereObstacles()) {
             onObstacle = onObstacle(hitbox.x, hitbox.y, (int) hitbox.width, (int) hitbox.height, levelManager.getObstacles());
@@ -315,7 +311,6 @@ public class Player extends Entity {
 
 
         if (inAir) {
-
             if(CanMoveHere(hitbox.x, hitbox.y + airSpeed,(int) hitbox.width, (int) hitbox.height, lvlDat)){
                 hitbox.y += airSpeed;
                 y = hitbox.y;

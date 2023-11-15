@@ -16,6 +16,8 @@ public class Obstacle extends Entity {
     private int aniIndex, aniTick, aniSpeed = 17;
     private float xPos;
     private float yPos;
+    private int xOffset = (int)(100 *Game.SCALE);
+    private int yOffset = (int) (10 * Game.SCALE);
     private int obbyAni;
     private Graphics g;
     private int GemCounter = 0;
@@ -38,7 +40,7 @@ public class Obstacle extends Entity {
             innitHitBox(xPos + 150f, yPos + 80f, 45 * Game.SCALE, 30 * Game.SCALE);
         }
         else if (type.equals("PENCIL")){
-            innitHitBox(xPos + 150f, yPos + 90f, 80 * Game.SCALE, 100 * Game.SCALE);
+            innitHitBox((xPos + 300) * Game.SCALE, yPos + 90f, 50 * Game.SCALE, 100 * Game.SCALE);
         }
 
     }
@@ -61,7 +63,7 @@ public class Obstacle extends Entity {
 
     public void render(Graphics g) {
         if (type.equals("GONE")) {
-            g.drawImage(animations[GONE][aniIndex], (int) xPos, (int) yPos, 0, 0, null);}
+            g.drawImage(animations[GONE][aniIndex], (int) xPos - xOffset, (int) yPos - yOffset, 0, 0, null);}
         else if (type.equals("GEM")) {
             g.drawImage(animations[GEM][aniIndex], (int)xPos, (int)yPos, 75, 46, null);
         } else if (type.equals("FIRE")) {

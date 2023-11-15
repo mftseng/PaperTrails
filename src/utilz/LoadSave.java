@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -17,6 +18,7 @@ public class LoadSave {
     public static final String MENU_BUTTONS = "menuButtons.png";
     public static final String MENU_TITLE = "menuTitle.png";
     public static final String BINDER_PAPER = "binderPaper.JPG";
+    public static final String ENEMIES_ATLAS = "Eraser_and_P1_Idle&Walk.png";
 
 
     public static BufferedImage GetSpriteAtlas(String fileName) {
@@ -36,6 +38,7 @@ public class LoadSave {
         }
         return img;
     }
+
 
 
 }

@@ -16,6 +16,28 @@ public class Constants {
         public static final int RIGHT = 2;
         public static final int DOWN = 3;
     }
+
+    public static class EnemyConstants{
+        public static final int Eraser = 0;
+        public static final int WALKING = 0;
+        public static final int IDLE = 1;
+
+        public static final int ERASER_WIDTH_DEFAULT = 161;
+        public static final int ERASER_HEIGHT_DEFAULT = 130;
+        public static final int ERASER_HEIGHT = (int) (ERASER_HEIGHT_DEFAULT* Game.SCALE);
+        public static final int ERASER_WIDTH = (int)(ERASER_WIDTH_DEFAULT*Game.SCALE);
+
+        public static int GetSpriteAmount(int enemyState) {
+            switch (enemyState) {
+                case WALKING:
+                    return 7;
+                case IDLE:
+                    return 2;
+                default:
+                    return 1;
+            }
+        }
+    }
     public static class PlayerConstants{
         public static final int IDLE1 = 0;
         public static final int IDLE2 = 1;

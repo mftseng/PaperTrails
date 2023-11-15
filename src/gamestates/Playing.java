@@ -1,5 +1,6 @@
 package gamestates;
 
+import entities.Enemy;
 import entities.Player;
 import levels.Level;
 import levels.LevelManager;
@@ -35,9 +36,9 @@ public class Playing extends State implements Statemethods{
     private void initClasses() {
         levelManager = new LevelManager(game);
 //        player1 = new Player(300f * Game.SCALE,Game.GAME_HEIGHT -120, 1, game);
-        player2 = new Player(50f * Game.SCALE, Game.GAME_HEIGHT -120, 2, game);
+//        player2 = new Player(50f * Game.SCALE, Game.GAME_HEIGHT -120, 2, game);
         player1 = new Player(50f * Game.SCALE,0, 1, game);
-//        player2 = new Player(50f * Game.SCALE, 0, 2, game);
+        player2 = new Player(50f * Game.SCALE, 0, 2, game);
         gemCNT = LoadSave.GetSpriteAtlas(LoadSave.OBBY_ATLAS);
         importFont();
 
@@ -96,6 +97,12 @@ public class Playing extends State implements Statemethods{
                 for (Obstacle obstacle : levelManager.getObstacles()) {
                     obstacle.render(g);
                     obstacle.update();
+                }
+            if(levelManager.getEnemies() != null){
+                    for (Enemy enemy : levelManager.getEnemies()) {
+                        enemy.draw(g);
+                        enemy.update();
+                    }
                 }
             }
             BufferedImage gemImg = gemCNT.getSubimage(0, 0, 105, 75);

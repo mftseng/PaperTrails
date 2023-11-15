@@ -10,14 +10,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 
+import entities.Enemy;
 import entities.Obstacle;
 import main.Game;
 import org.w3c.dom.css.Rect;
+import utilz.Constants;
 import utilz.LoadSave;
 
 import javax.swing.*;
 
 import static levels.Level.*;
+import static utilz.Constants.EnemyConstants.IDLE;
+import static utilz.Constants.EnemyConstants.WALKING;
 import static utilz.Constants.PlayerConstants.GetSpriteAmount;
 import static utilz.HelpMethods.CanMoveHere;
 
@@ -33,6 +37,7 @@ public class LevelManager {
     private static boolean isThereButtons;
     private static Rectangle[] buttons;
     private static Obstacle[] obstacles;
+    private static Enemy[] enemies;
     Font gemCounterFont;
     private int gemCounter = 0;
 
@@ -59,6 +64,9 @@ public class LevelManager {
     public Rectangle[] getLvlData(){return lvlDat;}
     public Rectangle[] getButtons(){return buttons;}
     public Obstacle[] getObstacles(){return obstacles;}
+    public Enemy[] getEnemies() {
+        return enemies;
+    }
     public boolean getAreThereObstacles(){return (obstacles.length > 0);}
 
 
@@ -85,6 +93,11 @@ public class LevelManager {
         obstacles[0] = new Obstacle("FIRE", 700, 400, game);
         obstacles[1] = new Obstacle("GEM", 270, 400, game);
         obstacles[2] = new Obstacle("PENCIL", 570, 430, game);
+
+        enemies = new Enemy[2];
+        enemies[0] = new Enemy(100, 100, IDLE, game);
+        enemies[1] = new Enemy(500, 200, WALKING, game);
+
 
         LevelCreated = true;
     }
@@ -214,6 +227,9 @@ public class LevelManager {
         obstacles[1] = new Obstacle("GEM", 270, 400, game);
         obstacles[2] = new Obstacle("FIRE", 570, 430, game);
 
+        enemies = new Enemy[1];
+        enemies[0] = new Enemy(100, 100, IDLE, game);
+
         LevelCreated = true;
     }
 
@@ -278,6 +294,9 @@ public class LevelManager {
         buttons[5] = new Rectangle(Game.GAME_WIDTH/2, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 - Game.BUTTON_HEIGHT, Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
 
 
+
+
+
         LevelCreated = true;
     }
 
@@ -303,7 +322,7 @@ public class LevelManager {
 
     public void createLevel(Graphics g){
 //
-        switch(7){
+        switch(1){
             case 1:
                 if(!LevelCreated){
                     createLevel1(g);
@@ -386,9 +405,6 @@ public class LevelManager {
     public boolean getLevelCreated(){
         return LevelCreated;
     }
-
-
-
 
 
 }
