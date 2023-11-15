@@ -11,7 +11,7 @@ import java.nio.Buffer;
 import static utilz.Constants.UI.*;
 
 public class MenuButton {
-    private int xPos, yPos, rowIndex;
+    private int xPos, yPos, rowIndex, aniTick, aniSpeed = 60;
     private Gamestate state;
     private BufferedImage[] imgs;
     private int index;
@@ -33,27 +33,42 @@ public class MenuButton {
 
 
     private void loadImages() {
-       imgs = new BufferedImage[3];
-       BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.MENU_BUTTONS);
-       for (int i = 0; i < imgs.length; i++){
-           imgs[i] = temp.getSubimage(i * B_WIDTH_DEFAULT, rowIndex * B_HEIGHT_DEFAULT, B_WIDTH_DEFAULT,B_HEIGHT_DEFAULT);
-       }
-   }
+        imgs = new BufferedImage[5];
+        BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.MENU_BUTTONS);
+        for (int i = 0; i < imgs.length; i++){
+            imgs[i] = temp.getSubimage(i * B_WIDTH_DEFAULT, rowIndex * B_HEIGHT_DEFAULT, B_WIDTH_DEFAULT,B_HEIGHT_DEFAULT);
+        }
+    }
 
     public void draw(Graphics g){
-        g.drawImage(imgs[index],  xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT, null);
+        g.drawImage(imgs[index],  xPos - xOffsetCenter, yPos, B_WIDTH_DEFAULT, B_HEIGHT_DEFAULT, null);
     }
 
     public void update(){
-        index = 0;
-        if(mouseOver){
-            index = 1;
-        }
-        if(mousePressed){
-            index = 2;
+        aniTick++;
+        if (aniTick >= aniSpeed){
+            aniTick = 0;
+            index ++;
+            if (index > 1){
+                index = 0;
+            }
         }
 
+        else if(mouseOver) {
+            index = 2;
+            while (index < imgs.length - 1) {
+                index++;
+            }
+        }
+
+        else if(mousePressed){
+            index = 1;
+
+
+        }
     }
+
+
     public boolean isMouseOver(){
         return mouseOver;
     }

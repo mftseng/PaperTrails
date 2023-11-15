@@ -11,19 +11,46 @@ import java.awt.image.BufferedImage;
 
 public class GMenu extends State implements Statemethods{
     private MenuButton[] buttons = new MenuButton[3];
+    private BufferedImage background;
+    private BufferedImage[] menuTitle = new BufferedImage[4];
+    private int index, aniTick, aniSpeed =60;
     public GMenu(Game game) {
         super(game);
         loadButtons();
+        loadBackground();
     }
 
     private void loadButtons() {
-        buttons[0] = new MenuButton(Game.GAME_WIDTH/2, (int) (100*Game.SCALE), 0, Gamestate.PLAYING);
-        buttons[1] = new MenuButton(Game.GAME_WIDTH/2, (int) (220*Game.SCALE), 1, Gamestate.OPTIONS);
-        buttons[2] = new MenuButton(Game.GAME_WIDTH/2, (int) (290*Game.SCALE), 2, Gamestate.QUIT);
+        buttons[0] = new MenuButton(Game.GAME_WIDTH/2, (int) (315*Game.SCALE), 0, Gamestate.PLAYING);
+        buttons[1] = new MenuButton(Game.GAME_WIDTH/2, (int) (435*Game.SCALE), 1, Gamestate.OPTIONS);
+        buttons[2] = new MenuButton(Game.GAME_WIDTH/2, (int) (550*Game.SCALE), 2, Gamestate.QUIT);
+    }
+
+    private void loadBackground(){
+        background = LoadSave.GetSpriteAtlas(LoadSave.BINDER_PAPER);
+        BufferedImage menuImg = LoadSave.GetSpriteAtlas(LoadSave.MENU_TITLE);
+        for (int i = 0; i < 3; i++){
+            menuTitle[i] = menuImg.getSubimage(390 * i, 0, 390, 170);
+        }
+        menuTitle[3] = menuTitle[1];
+
+    }
+
+    private void updateBackground(){
+        aniTick ++;
+        if (aniTick >= aniSpeed){
+            aniTick = 0;
+            index ++;
+            if(index>=4){
+                index = 0;
+            }
+        }
+
     }
 
     @Override
     public void update() {
+        updateBackground();
         for (MenuButton menuButton : buttons){
             menuButton.update();
         }
@@ -32,6 +59,8 @@ public class GMenu extends State implements Statemethods{
 
     @Override
     public void draw(Graphics g) {
+        g.drawImage(background, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+        g.drawImage(menuTitle[index], 445, 100, 300, 100, null);
         for (MenuButton menuButton: buttons){
             menuButton.draw(g);
         }

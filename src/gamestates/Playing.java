@@ -35,9 +35,9 @@ public class Playing extends State implements Statemethods{
     private void initClasses() {
         levelManager = new LevelManager(game);
 //        player1 = new Player(300f * Game.SCALE,Game.GAME_HEIGHT -120, 1, game);
-//        player2 = new Player(400f * Game.SCALE, Game.GAME_HEIGHT -120, 2, game);
+        player2 = new Player(50f * Game.SCALE, Game.GAME_HEIGHT -120, 2, game);
         player1 = new Player(50f * Game.SCALE,0, 1, game);
-        player2 = new Player(50f * Game.SCALE, 0, 2, game);
+//        player2 = new Player(50f * Game.SCALE, 0, 2, game);
         gemCNT = LoadSave.GetSpriteAtlas(LoadSave.OBBY_ATLAS);
         importFont();
 

@@ -247,7 +247,7 @@ public class LevelManager {
 
 
         //Gate 1
-        lvlDat[12] = new Rectangle(Game.SPACE_BETWEEN_LINES*2, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE-4, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
+        lvlDat[16] = new Rectangle(Game.SPACE_BETWEEN_LINES*2, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE-4, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
         //Gate 2
         lvlDat[13] = new Rectangle(Game.SPACE_BETWEEN_LINES*4, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE-4, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
         //Gate 3
@@ -255,7 +255,7 @@ public class LevelManager {
         //Gate 4
         lvlDat[15] = new Rectangle(Game.SPACE_BETWEEN_LINES*8, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE-4, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
         //Gate 5
-        lvlDat[16] = new Rectangle(Game.SPACE_BETWEEN_LINES*10, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE-4, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
+        lvlDat[12] = new Rectangle(Game.SPACE_BETWEEN_LINES*10, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE-4, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
         //Gate 6
         lvlDat[17] = new Rectangle(Game.SPACE_BETWEEN_LINES*12, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 + Game.LINE_SIZE-4, Game.LINE_SIZE, Game.BLOCK_SIZE*2);
 

@@ -271,7 +271,7 @@ public class Player extends Entity {
                 }
             } else {
                 for (int i = 0; i < levelManager.getButtons().length; i++) {
-                    if (CanMoveHeretest(levelManager.getLvlData()[GateStartingIndex + i].x, levelManager.getLvlData()[GateStartingIndex + i].height + 1, 1, 1, lvlDat)) {
+                    if (CanMoveHeretest(levelManager.getLvlData()[GateStartingIndex + i].x, levelManager.getLvlData()[GateStartingIndex + i].height + 10, 1, 1, lvlDat)) {
                         levelManager.getLvlData()[GateStartingIndex + onButton + 1 + i].height++;
                     }
                 }
@@ -280,10 +280,10 @@ public class Player extends Entity {
                     levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].height = Game.BUTTON_HEIGHT;
                     levelManager.getButtons()[tempOnButton].y = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].y;
                     levelManager.getButtons()[tempOnButton].height = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].height;
-                    System.out.println(tempOnButton);
+//                    System.out.println(tempOnButton);
                     buttonPressedState = false;
                 }
-                System.out.println(buttonPressed);
+//                System.out.println(buttonPressed);
 
             }
         }

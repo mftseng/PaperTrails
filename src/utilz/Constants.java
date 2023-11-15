@@ -4,13 +4,10 @@ import main.Game;
 
 public class Constants {
     public static class UI{
-        public static final int B_WIDTH_DEFAULT = 80;
-        public static final int B_HEIGHT_DEFAULT = 100;
+        public static final int B_WIDTH_DEFAULT = 151;
+        public static final int B_HEIGHT_DEFAULT = 93;
         public static final int B_WIDTH = (int)(B_WIDTH_DEFAULT* Game.SCALE);
         public static final int B_HEIGHT = (int)(B_HEIGHT_DEFAULT* Game.SCALE);
-        public static final int PLAY_BUTTON = 0;
-        public static final int OPTIONS_BUTTON = 1;
-        public static final int QUIT_BUTTON = 2;
     }
 
     public static class Directions{
