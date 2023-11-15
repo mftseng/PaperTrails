@@ -170,6 +170,11 @@ public class LevelManager {
         buttons[0] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
         buttons[1] = new Rectangle(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
 
+        //obstacles
+        obstacles = new Obstacle[3];
+        obstacles[0] = new Obstacle("GEM", 690, 45, game);
+        obstacles[1] = new Obstacle("GEM", 1015, 335, game);
+        obstacles[2] = new Obstacle("GEM", 630, 400, game);
 
         LevelCreated = true;
     }
