@@ -1,29 +1,14 @@
 package levels;
 
 import java.awt.*;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
 
-import entities.Enemy;
-import entities.Obstacle;
+import entities.*;
 import main.Game;
-import org.w3c.dom.css.Rect;
-import utilz.Constants;
 import utilz.LoadSave;
 
-import javax.swing.*;
-
-import static levels.Level.*;
 import static utilz.Constants.EnemyConstants.IDLE;
 import static utilz.Constants.EnemyConstants.WALKING;
-import static utilz.Constants.PlayerConstants.GetSpriteAmount;
-import static utilz.HelpMethods.CanMoveHere;
 
 public class LevelManager {
     private int aniTick, aniIndex, aniSpeed = 17;
@@ -37,7 +22,7 @@ public class LevelManager {
     private static boolean isThereButtons;
     private static Rectangle[] buttons;
     private static Obstacle[] obstacles;
-    private static Enemy[] enemies;
+    private static Eraser[] enemies;
     Font gemCounterFont;
     private int gemCounter = 0;
 
@@ -64,7 +49,7 @@ public class LevelManager {
     public Rectangle[] getLvlData(){return lvlDat;}
     public Rectangle[] getButtons(){return buttons;}
     public Obstacle[] getObstacles(){return obstacles;}
-    public Enemy[] getEnemies() {
+    public Eraser[] getEnemies() {
         return enemies;
     }
     public boolean getAreThereObstacles(){return (obstacles.length > 0);}
@@ -89,14 +74,13 @@ public class LevelManager {
         lvlDat = new Rectangle[1];
         lvlDat[0] = new Rectangle(0, Game.GAME_HEIGHT/2 + Game.BLOCK_SIZE*2,Game.GAME_WIDTH,Game.GAME_HEIGHT/2);
 
-        obstacles = new Obstacle[3];
-        obstacles[0] = new Obstacle("FIRE", 700, 400, game);
-        obstacles[1] = new Obstacle("GEM", 270, 400, game);
-        obstacles[2] = new Obstacle("PENCIL", 570, 430, game);
+        obstacles = new Obstacle[4];
+        obstacles[0] = new Fire( 900, 400, game);
+        obstacles[1] = new Gem( 270, 400, game);
+        obstacles[2] = new Pencil( 570, 430, game);
+        obstacles[3] = new Eraser( 700, 400, game);
 
-        enemies = new Enemy[2];
-        enemies[0] = new Enemy(100, 100, IDLE, game);
-        enemies[1] = new Enemy(500, 200, WALKING, game);
+
 
 
         LevelCreated = true;
@@ -193,9 +177,9 @@ public class LevelManager {
         lvlDat[0] = new Rectangle(0, Game.GAME_HEIGHT/2 + Game.BLOCK_SIZE*2,Game.GAME_WIDTH,Game.GAME_HEIGHT/2);
 
         obstacles = new Obstacle[3];
-        obstacles[0] = new Obstacle("PENCIL", 700, 400, game);
-        obstacles[1] = new Obstacle("GEM", 270, 400, game);
-        obstacles[2] = new Obstacle("FIRE", 570, 430, game);
+        obstacles[0] = new Pencil( 700, 400, game);
+        obstacles[1] = new Gem( 270, 400, game);
+        obstacles[2] = new Fire(570, 430, game);
 
         LevelCreated = true;
     }
@@ -223,12 +207,10 @@ public class LevelManager {
 
 
         obstacles = new Obstacle[3];
-        obstacles[0] = new Obstacle("PENCIL", 700, 400, game);
-        obstacles[1] = new Obstacle("GEM", 270, 400, game);
-        obstacles[2] = new Obstacle("FIRE", 570, 430, game);
+        obstacles[0] = new Pencil( 700, 400, game);
+        obstacles[1] = new Gem( 270, 400, game);
+        obstacles[2] = new Fire(570, 430, game);
 
-        enemies = new Enemy[1];
-        enemies[0] = new Enemy(100, 100, IDLE, game);
 
         LevelCreated = true;
     }

@@ -37,6 +37,11 @@ public abstract class Entity {
         hitbox.y = (int) y;
     }
 
+    protected void setHitbox(float x, float y){
+        hitbox.x = x;
+        hitbox.y=y;
+    }
+
     public Rectangle2D.Float getHitbox() {
         return hitbox;
     }

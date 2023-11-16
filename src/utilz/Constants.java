@@ -73,7 +73,8 @@ public class Constants {
         public static final int GEM = 0;
         public static final int FIRE = 1;
         public static final int PENCIL = 2;
-        public static final int GONE = 3;
+        public static final int ERASER = 3;
+        public static final int GONE = 4;
 
     }
 }

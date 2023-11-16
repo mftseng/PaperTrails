@@ -1,12 +1,10 @@
 package gamestates;
 
-import entities.Enemy;
+import entities.Eraser;
 import entities.Player;
-import levels.Level;
 import levels.LevelManager;
 import main.Game;
 import entities.Obstacle;
-import org.w3c.dom.css.Rect;
 import utilz.LoadSave;
 
 import java.awt.*;
@@ -15,10 +13,9 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.Buffer;
 
 import static utilz.HelpMethods.*;
-import static levels.LevelManager.*;
+
 public class Playing extends State implements Statemethods{
     private Player player1;
     private Player player2;
@@ -98,18 +95,12 @@ public class Playing extends State implements Statemethods{
                     obstacle.render(g);
                     obstacle.update();
                 }
-            if(levelManager.getEnemies() != null){
-                    for (Enemy enemy : levelManager.getEnemies()) {
-                        enemy.draw(g);
-                        enemy.update();
-                    }
-                }
             }
-            BufferedImage gemImg = gemCNT.getSubimage(0, 0, 105, 75);
+            BufferedImage gemImg = gemCNT.getSubimage(0, 0, 70, 65);
             g.drawImage(gemImg, 10, 590, 105, 80, null);
             g.setFont(gemFont);
-            g.setColor(Color.BLACK);
-            g.drawString("x" + Player.getGemCounter(), 1100, 27);
+            g.setColor(Color.black);
+            g.drawString("x" + Player.getGemCounter(), 105, Game.GAME_HEIGHT- 10);
         }
         else if (Gamestate.state == Gamestate.LEVELCOMPLETE){
             g.drawRect(0, 0, 800, 800);
@@ -125,7 +116,7 @@ public class Playing extends State implements Statemethods{
         try {
             InputStream is = getClass().getResourceAsStream("/gemCounterFont.ttf");
             Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
-            gemFont = baseFont.deriveFont(30f);
+            gemFont = baseFont.deriveFont(35f);
         }
         catch(FontFormatException e){
             e.printStackTrace();

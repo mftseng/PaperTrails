@@ -218,33 +218,46 @@ public class Player extends MovingEntities {
         Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
         if (lvlDat != null) {
             inAir = CanMoveHere(hitbox.x, hitbox.y + airSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
-            if (!inAir){
-                if(CanMoveHere(hitbox.x, hitbox.y + 5,(int) hitbox.width, (int) hitbox.height, lvlDat)){
+
+            //Fix for sticky ceilings
+            if (!inAir) {
+                if (CanMoveHere(hitbox.x, hitbox.y + 5, (int) hitbox.width, (int) hitbox.height, lvlDat)) {
                     inAir = true;
                     airSpeed = 0;
                     hitbox.y += 1;
-                    y= hitbox.y;
+                    y = hitbox.y;
                 }
             }
         }
 
-        if (levelManager.getObstacles() != null){
-        if (levelManager.getAreThereObstacles()) {
-            onObstacle = onObstacle(hitbox.x, hitbox.y, (int) hitbox.width, (int) hitbox.height, levelManager.getObstacles());
-            if (onObstacle != -1) {
-                if (levelManager.getObstacles()[onObstacle].getType().equals("GEM")) {
-                    levelManager.getObstacles()[onObstacle].setType("GONE");
-                    gemCounter++;
-                    levelManager.getObstacles()[onObstacle].setX(-10);
-                } else if (levelManager.getObstacles()[onObstacle].getType().equals("FIRE")) {
-                    died = true;
+        if (levelManager.getObstacles() != null) {
+            if (levelManager.getAreThereObstacles()) {
+//                System.out.println(levelManager.getObstacles()[2]);
+                onObstacle = onObstacle(hitbox.x, hitbox.y, (int) hitbox.width, (int) hitbox.height, levelManager.getObstacles());
+//            System.out.println(onObstacle);
+                if (onObstacle != -1) {
+                    if (levelManager.getObstacles()[onObstacle] instanceof Gem) {
+                        Gem gem =  (Gem)levelManager.getObstacles()[onObstacle];
+                        if (!gem.getCollected()) {
+                            gem.setCollected();
+                            gemCounter++;
+                        }
+                    } else if (levelManager.getObstacles()[onObstacle] instanceof Fire) {
+                        died = true;
+                        System.out.println(onObstacle);
 
-                } else if (levelManager.getObstacles()[onObstacle].getType().equals("PENCIL")) {
-                    Gamestate.state = Gamestate.LEVELCOMPLETE;
+                    }
+//                    else if (levelManager.getObstacles()[onObstacle] instanceof Eraser) {
+//                        died = true;
+//                        System.out.println(onObstacle);
+//                    }
+                    else if (levelManager.getObstacles()[onObstacle] instanceof Pencil) {
+                        Gamestate.state = Gamestate.LEVELCOMPLETE;
+                    }
                 }
             }
         }
-        }
+
 
         if (levelManager.getButtons() != null) {
             onButton = CanMoveHereObject(hitbox.x, hitbox.y + 10, (int) hitbox.width, (int) hitbox.height, levelManager.getButtons());
