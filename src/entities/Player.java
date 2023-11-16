@@ -155,11 +155,11 @@ public class Player extends MovingEntities {
         }
         else if (died){
             playerAction = DEATH;
-            if (this.playerNum == 1)
-                Gamestate.state = Gamestate.PLAYER1DEAD;
-            else if (this.playerNum == 2){
-                Gamestate.state = Gamestate.PLAYER2DEAD;
-            }
+//            if (this.playerNum == 1)
+//                Gamestate.state = Gamestate.PLAYER1DEAD;
+//            else if (this.playerNum == 2){
+//                Gamestate.state = Gamestate.PLAYER2DEAD;
+//            }
         }
         else if (playerNum == 1)
             playerAction = IDLE1;
@@ -247,10 +247,10 @@ public class Player extends MovingEntities {
                         System.out.println(onObstacle);
 
                     }
-//                    else if (levelManager.getObstacles()[onObstacle] instanceof Eraser) {
-//                        died = true;
-//                        System.out.println(onObstacle);
-//                    }
+                    else if (levelManager.getObstacles()[onObstacle] instanceof NME) {
+                        died = true;
+                        System.out.println(onObstacle);
+                    }
                     else if (levelManager.getObstacles()[onObstacle] instanceof Pencil) {
                         Gamestate.state = Gamestate.LEVELCOMPLETE;
                     }

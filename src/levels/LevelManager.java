@@ -78,7 +78,8 @@ public class LevelManager {
         obstacles[0] = new Fire( 900, 400, game);
         obstacles[1] = new Gem( 270, 400, game);
         obstacles[2] = new Pencil( 570, 430, game);
-        obstacles[3] = new Eraser( 700, 400, game);
+        obstacles[3] = new NME( 700, 400, game, 2f);
+
 
 
 

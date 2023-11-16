@@ -99,7 +99,7 @@ public class Playing extends State implements Statemethods{
             BufferedImage gemImg = gemCNT.getSubimage(0, 0, 70, 65);
             g.drawImage(gemImg, 10, 590, 105, 80, null);
             g.setFont(gemFont);
-            g.setColor(Color.black);
+            g.setColor(Color.white);
             g.drawString("x" + Player.getGemCounter(), 105, Game.GAME_HEIGHT- 10);
         }
         else if (Gamestate.state == Gamestate.LEVELCOMPLETE){

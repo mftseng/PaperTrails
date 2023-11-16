@@ -2,49 +2,42 @@ package entities;
 
 import levels.LevelManager;
 import main.Game;
-import utilz.LoadSave;
-
-import static utilz.Constants.EnemyConstants.*;
-import static utilz.Constants.ObstacleConstants.ERASER;
-import static utilz.HelpMethods.CanMoveHere;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Eraser extends Obstacle{
+import static utilz.Constants.EnemyConstants.ERASER_HEIGHT;
+import static utilz.Constants.EnemyConstants.ERASER_WIDTH;
+import static utilz.Constants.ObstacleConstants.ERASER;
+import static utilz.Constants.ObstacleConstants.FIRE;
+import static utilz.HelpMethods.CanMoveHere;
 
-    private int aniIndex, enemyState;
-    private int aniTick, aniSpeed = 5;
-    private float xDrawOffset = 45 * Game.SCALE;
-    private float yDrawOffset = 35 * Game.SCALE;
-    private BufferedImage[][] eraserArray;
-    private LevelManager levelManager;
 
+public class NME extends Obstacle{
     private boolean inAir;
     private float airSpeed = 0f;
     private float gravity = .15f * Game.SCALE;
-
-    private float xSpeed = 2f;
-
-    public Eraser(float xPos, float yPos, Game game) {
+    private float xSpeed;
+    public NME(float xPos, float yPos, Game game, float xspeed) {
         super(xPos, yPos, game);
-        innitHitBox(x, y , (int)((ERASER_WIDTH-40)*Game.SCALE), (int)((ERASER_HEIGHT+15)*Game.SCALE));
+        innitHitBox(x, y , (int)((ERASER_WIDTH-40)*Game.SCALE), (int)((ERASER_HEIGHT)*Game.SCALE));
+        this.xSpeed = xspeed;
         levelManager = new LevelManager(game);
     }
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(animations[ERASER][aniIndex], (int) (x - 35), (int) (y - 15), ERASER_WIDTH, ERASER_HEIGHT, null);
-        drawHitbox(g);
-//        System.out.println("x: "+ hitbox.x + "y: " + hitbox.y);
+        BufferedImage currentImage = animations[ERASER][aniIndex];
+
+        // Flip the image horizontally if moving left
+        if (xSpeed < 0) {
+            // Create a horizontally flipped image
+            currentImage = flipImage(currentImage);
         }
 
-//    @Override
-//    public void update(){
-////        updatePos();
-//        updateHitbox();
-//        updateAnimationTickOBBY();
-//    }
+        g.drawImage(currentImage, (int) (x - 35), (int) (y - 15), ERASER_WIDTH, ERASER_HEIGHT, null);
+        drawHitbox(g);
+    }
 
     @Override
     protected void updateAnimationTickOBBY() {
@@ -57,8 +50,12 @@ public class Eraser extends Obstacle{
             }
         }
     }
-
-
+    @Override
+    public void update(){
+        updatePos();
+        updateHitbox();
+        updateAnimationTickOBBY();
+    }
 
     public void updatePos() {
         Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
@@ -88,8 +85,20 @@ public class Eraser extends Obstacle{
 
     }
 
+    private BufferedImage flipImage(BufferedImage image) {
+        BufferedImage flippedImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
+        // Create a graphics object from the flipped image
+        Graphics2D g = flippedImage.createGraphics();
 
+        // Flip the image horizontally using transformation
+        g.drawImage(image, image.getWidth(), 0, 0, image.getHeight(), 0, 0, image.getWidth(), image.getHeight(), null);
+
+        // Dispose the graphics object
+        g.dispose();
+
+        return flippedImage;
+    }
 
 
 }
