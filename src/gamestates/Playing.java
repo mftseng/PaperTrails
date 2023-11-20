@@ -16,7 +16,7 @@ import java.io.InputStream;
 
 import static utilz.HelpMethods.*;
 
-public class Playing extends State implements Statemethods{
+public class Playing extends State implements Statemethods {
     private Player player1;
     private Player player2;
     private LevelManager levelManager;
@@ -25,6 +25,7 @@ public class Playing extends State implements Statemethods{
     private static boolean GameOver;
     private BufferedImage gemCNT;
     Font gemFont;
+
     public Playing(Game game) {
         super(game);
         initClasses();
@@ -34,7 +35,7 @@ public class Playing extends State implements Statemethods{
         levelManager = new LevelManager(game);
 //        player1 = new Player(300f * Game.SCALE,Game.GAME_HEIGHT -120, 1, game);
 //        player2 = new Player(50f * Game.SCALE, Game.GAME_HEIGHT -120, 2, game);
-        player1 = new Player(50f * Game.SCALE,0, 1, game);
+        player1 = new Player(50f * Game.SCALE, 0, 1, game);
         player2 = new Player(50f * Game.SCALE, 0, 2, game);
         gemCNT = LoadSave.GetSpriteAtlas(LoadSave.OBBY_ATLAS);
         importFont();
@@ -42,7 +43,7 @@ public class Playing extends State implements Statemethods{
 
     }
 
-    public void windowFocusLost(){
+    public void windowFocusLost() {
         player1.resetDirBooleans();
         player2.resetDirBooleans();
 
@@ -50,8 +51,8 @@ public class Playing extends State implements Statemethods{
 
     public void PlayerCollided(Player player1, Player player2) {
         Rectangle[] P2 = new Rectangle[1];
-        P2[0] = new Rectangle((int)player2.getHitbox().x, (int)player2.getHitbox().y, (int)player2.getHitbox().width, (int)player2.getHitbox().height);
-        if (CanMoveHere(player1.getHitbox().x, player1.getHitbox().y, (int) player1.getHitbox().width, (int)player1.getHitbox().height, P2))
+        P2[0] = new Rectangle((int) player2.getHitbox().x, (int) player2.getHitbox().y, (int) player2.getHitbox().width, (int) player2.getHitbox().height);
+        if (CanMoveHere(player1.getHitbox().x, player1.getHitbox().y, (int) player1.getHitbox().width, (int) player1.getHitbox().height, P2))
             PlayerCollision = false;
         else
             PlayerCollision = true;
@@ -59,7 +60,7 @@ public class Playing extends State implements Statemethods{
 
     @Override
     public void update() {
-        if(Gamestate.state != Gamestate.LEVELCOMPLETE || Gamestate.state != Gamestate.GAMEOVER) {
+        if (Gamestate.state != Gamestate.LEVELCOMPLETE || Gamestate.state != Gamestate.GAMEOVER) {
             levelManager.update();
             player1.update();
             player2.update();
@@ -80,37 +81,25 @@ public class Playing extends State implements Statemethods{
     }
 
 
-
-
-
-
     @Override
     public void draw(Graphics g) {
-        if(Gamestate.state != Gamestate.LEVELCOMPLETE || Gamestate.state != Gamestate.GAMEOVER) {
-            levelManager.render(g);
-            player1.render(g);
-            player2.render(g);
-            if(levelManager.getObstacles() != null) {
-                for (Obstacle obstacle : levelManager.getObstacles()) {
-                    obstacle.render(g);
-                    obstacle.update();
-                }
+        levelManager.render(g);
+        player1.render(g);
+        player2.render(g);
+        if (levelManager.getObstacles() != null) {
+            for (Obstacle obstacle : levelManager.getObstacles()) {
+                obstacle.render(g);
+                obstacle.update();
             }
-            BufferedImage gemImg = gemCNT.getSubimage(0, 0, 70, 65);
-            g.drawImage(gemImg, 10, 590, 105, 80, null);
-            g.setFont(gemFont);
-            g.setColor(Color.white);
-            g.drawString("x" + Player.getGemCounter(), 105, Game.GAME_HEIGHT- 10);
         }
-        else if (Gamestate.state == Gamestate.LEVELCOMPLETE){
-            g.drawRect(0, 0, 800, 800);
-            g.setFont(gemFont);
-            g.setColor(Color.BLACK);
-            g.drawString("LEVEL COMPLETE", 80, 400);
-        }
-
-
+        BufferedImage gemImg = gemCNT.getSubimage(0, 0, 70, 65);
+        g.drawImage(gemImg, 10, 590, 105, 80, null);
+        g.setFont(gemFont);
+        g.setColor(Color.white);
+        g.drawString("x" + Player.getGemCounter(), 105, Game.GAME_HEIGHT - 10);
     }
+
+
 
     private void importFont(){
         try {

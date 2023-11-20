@@ -5,15 +5,18 @@ import entities.Player;
 
 import gamestates.*;
 import levels.LevelManager;
+import utilz.LoadSave;
 
 import javax.sound.sampled.Line;
 import java.awt.*;
-
+import java.awt.image.BufferedImage;
 import static java.awt.SystemColor.menu;
 
 public class Game implements Runnable{
     private Playing playing;
+    private LevelComplete levelComplete;
     private GMenu menu;
+    private BufferedImage background = LoadSave.GetSpriteAtlas(LoadSave.BINDER_PAPER);
 
 
     private LevelManager levelManager;
@@ -54,6 +57,7 @@ public class Game implements Runnable{
         gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel);
         gamePanel.requestFocus();
+        levelManager = new LevelManager(this);
 
 
         startGameLoop();
@@ -61,6 +65,7 @@ public class Game implements Runnable{
     private void initClasses(){
         menu = new GMenu(this);
         playing = new Playing(this);
+        levelComplete = new LevelComplete(this);
 
 
     }
@@ -69,14 +74,18 @@ public class Game implements Runnable{
         gameThread.start();
     }
 
+
     public void update(){
         switch(Gamestate.state){
             case MENU:
+
                 menu.update();
                 break;
             case PLAYING:
                 playing.update();
                 break;
+            case LEVELCOMPLETE:
+                levelComplete.update();
             default:
                 break;
         }
@@ -86,14 +95,19 @@ public class Game implements Runnable{
     public void render(Graphics g){
         switch(Gamestate.state){
             case MENU:
+                g.drawImage(background, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
                 menu.draw(g);
                 break;
             case PLAYING:
+            g.drawImage(background, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
                 playing.draw(g);
                 break;
             case QUIT:
                 System.exit(0);
                 break;
+            case LEVELCOMPLETE:
+                g.drawImage(background, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+                levelComplete.draw(g);
             default:
                 break;
         }

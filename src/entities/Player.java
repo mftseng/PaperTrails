@@ -46,13 +46,15 @@ public class Player extends MovingEntities {
     private int onButton = -1, tempOnButton ;
     private boolean buttonPressedState, buttonPressed;
 
+    private boolean flipped;
+
 
     public Player(float x, float y, int playerNum, Game game) {
         super(x, y, Game.CHAR_WIDTH, Game.CHAR_HEIGHT, game);
         this.playerNum = playerNum;
         loadAnimations();
         levelManager = new LevelManager(game);
-        innitHitBox(x, y, 43 * Game.SCALE, 95 * Game.SCALE);
+        innitHitBox(x, y, 43 * Game.SCALE, 90 * Game.SCALE);
 
 
     }
@@ -90,17 +92,29 @@ public class Player extends MovingEntities {
 
 
 
-
     public void render(Graphics g) {
-//        System.out.println("Gems: " + gemCounter);
-        if (this.playerNum == 1)
-            g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), Game.CHAR1_WIDTH, Game.CHAR1_HEIGHT, null);
-        else
-            g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), Game.CHAR2_WIDTH, Game.CHAR2_HEIGHT, null);
-        drawHitbox(g);
-//        System.out.println(levelManager.getisThereButtons());
-//        System.out.println(levelManager.getButtons().length);
+        boolean isFacingLeft = (left && !right);
+        boolean isFacingRight = (right && !left);
+
+        BufferedImage playerImage = animations[playerAction][aniIndex];
+        int drawX = (int) (hitbox.x - xDrawOffset);
+        int drawY = (int) (hitbox.y - yDrawOffset);
+
+        if ((isFacingLeft && playerNum == 1) || (isFacingLeft && playerNum == 2)) {
+
+            playerImage = flipImage(playerImage);
+            // Adjust the drawX position to compensate for the flipped image
+            if (playerImage != null)
+                drawX += playerImage.getWidth() - (this.playerNum == 1 ? Game.CHAR1_WIDTH : Game.CHAR2_WIDTH);
+        }
+
+        int width = (this.playerNum == 1) ? Game.CHAR1_WIDTH : Game.CHAR2_WIDTH;
+        int height = (this.playerNum == 1) ? Game.CHAR1_HEIGHT : Game.CHAR2_HEIGHT;
+        g.drawImage(playerImage, drawX, drawY, width, height, null);
+
+//        drawHitbox(g);
     }
+
 
 
     public void setDirection(int direction) {
@@ -280,7 +294,7 @@ public class Player extends MovingEntities {
                 }
             } else {
                 for (int i = 0; i < levelManager.getButtons().length; i++) {
-                    if (CanMoveHeretest(levelManager.getLvlData()[GateStartingIndex + i].x, levelManager.getLvlData()[GateStartingIndex + i].height + 10, 1, 1, lvlDat)) {
+                    if (CanMoveHere(levelManager.getLvlData()[GateStartingIndex + i].x, levelManager.getLvlData()[GateStartingIndex + i].height + 10, 1, 1, lvlDat)) {
                         levelManager.getLvlData()[GateStartingIndex + onButton + 1 + i].height++;
                     }
                 }
@@ -363,7 +377,23 @@ public class Player extends MovingEntities {
         return gemCounter;
     }
 
+    private BufferedImage flipImage(BufferedImage image) {
+        if (image != null) {
+            BufferedImage flippedImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
+            // Create a graphics object from the flipped image
+            Graphics2D g = flippedImage.createGraphics();
+
+            // Flip the image horizontally using transformation
+            g.drawImage(image, image.getWidth(), 0, 0, image.getHeight(), 0, 0, image.getWidth(), image.getHeight(), null);
+
+            // Dispose the graphics object
+            g.dispose();
+
+            return flippedImage;
+        }
+        return image;
+    }
 
 
 
