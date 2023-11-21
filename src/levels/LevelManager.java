@@ -86,9 +86,6 @@ public class LevelManager {
         obstacles[3] = new NME( 700, 400, game, 2f);
 
 
-
-
-
         LevelCreated = true;
     }
 
@@ -98,6 +95,10 @@ public class LevelManager {
         for (int i = 1; i < 4; i++) {
             lvlDat[i] = new Rectangle(Game.BLOCK_SIZE*2 + Game.BLOCK_SIZE*3*i, Game.GAME_HEIGHT / 2 + Game.BLOCK_SIZE, Game.BLOCK_SIZE, Game.BLOCK_SIZE);
         }
+        obstacles = new Obstacle[1];
+        obstacles[0] = new Pencil( (float) Game.GAME_WIDTH - Game.BLOCK_SIZE*2, (float) Game.GAME_HEIGHT /2 - Game.BLOCK_SIZE, game);
+//        obstacles[1] = new Pencil( Game.GAME_WIDTH - Game.BLOCK_SIZE*3, Game.GAME_HEIGHT/2 - Game.BLOCK_SIZE, game);
+
     }
 
     public void createLevel3(){
@@ -335,7 +336,7 @@ public class LevelManager {
 
     public void createLevel(Graphics g){
 //
-        switch(7){
+        switch(1){
             case 1:
                 if(!LevelCreated){
                     createLevel1(g);

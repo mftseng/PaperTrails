@@ -31,6 +31,7 @@ public class Player extends MovingEntities {
     private float airSpeed = 0f;
     private float gravity = .15f * Game.SCALE;
     private float jumpSpeed = -6.5f * Game.SCALE;
+    private boolean inAirTest = true;
     private boolean inAir;
     private boolean inAirNotButton = false;
 
@@ -38,6 +39,8 @@ public class Player extends MovingEntities {
 
     private boolean died = false;
     private boolean gotPencil = false;
+
+    private boolean gateClosed = true;
 
 
     private Playerstate playerstate = Playerstate.ACTIVE;
@@ -62,7 +65,8 @@ public class Player extends MovingEntities {
 
     public void update() {
         if (playerstate == Playerstate.ACTIVE) {
-            updatePos();
+//            updatePos();
+            updatePosTest();
             updateHitbox();
             updateAnimationTick();
             setAnimation();
@@ -112,7 +116,7 @@ public class Player extends MovingEntities {
         int height = (this.playerNum == 1) ? Game.CHAR1_HEIGHT : Game.CHAR2_HEIGHT;
         g.drawImage(playerImage, drawX, drawY, width, height, null);
 
-//        drawHitbox(g);
+        drawHitbox(g);
     }
 
 
@@ -244,11 +248,9 @@ public class Player extends MovingEntities {
             }
         }
 
-        if (levelManager.getObstacles() != null) {
+        if (levelManager.getObstacles() != null) { //get Obstacles should never be null so this should be removed ideally
             if (levelManager.getAreThereObstacles()) {
-//                System.out.println(levelManager.getObstacles()[2]);
                 onObstacle = onObstacle(hitbox.x, hitbox.y, (int) hitbox.width, (int) hitbox.height, levelManager.getObstacles());
-//            System.out.println(onObstacle);
                 if (onObstacle != -1) {
                     if (levelManager.getObstacles()[onObstacle] instanceof Gem) {
                         Gem gem =  (Gem)levelManager.getObstacles()[onObstacle];
@@ -303,10 +305,8 @@ public class Player extends MovingEntities {
                     levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].height = Game.BUTTON_HEIGHT;
                     levelManager.getButtons()[tempOnButton].y = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].y;
                     levelManager.getButtons()[tempOnButton].height = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].height;
-//                    System.out.println(tempOnButton);
                     buttonPressedState = false;
                 }
-//                System.out.println(buttonPressed);
 
             }
         }
@@ -319,7 +319,6 @@ public class Player extends MovingEntities {
         if (!left && !right && !up && !inAir) {
             return;
         }
-
 
         movingX = false;
 
@@ -336,8 +335,8 @@ public class Player extends MovingEntities {
             }
         }
 
-
-        if (inAir) {
+        //Gravity Logic + Horizontal movement logic
+        if (inAir) { //Checks if you are in the air, then moves down if true
             if(CanMoveHere(hitbox.x, hitbox.y + airSpeed,(int) hitbox.width, (int) hitbox.height, lvlDat)){
                 hitbox.y += airSpeed;
                 y = hitbox.y;
@@ -345,7 +344,7 @@ public class Player extends MovingEntities {
                 if(right || left)
                     updateXPos(xSpeed);
             }
-        } else {
+        } else { //If not in air, reset gravity
             airSpeed = 0;
             if(right || left)
                 updateXPos(xSpeed);
@@ -354,7 +353,150 @@ public class Player extends MovingEntities {
 
     }
 
-    private void updateXPos(float xSpeed) {
+    private void updatePosTest() {
+        Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
+
+        //Obstacles logic
+        if (levelManager.getObstacles() != null) { //get Obstacles should never be null so this should be removed ideally
+            if (levelManager.getAreThereObstacles()) {
+                onObstacle = onObstacle(hitbox.x, hitbox.y, (int) hitbox.width, (int) hitbox.height, levelManager.getObstacles());
+                if (onObstacle != -1) {
+                    if (levelManager.getObstacles()[onObstacle] instanceof Gem) {
+                        Gem gem = (Gem) levelManager.getObstacles()[onObstacle];
+                        if (!gem.getCollected()) {
+                            gem.setCollected();
+                            gemCounter++;
+                        }
+                    } else if (levelManager.getObstacles()[onObstacle] instanceof Fire) {
+                        died = true;
+                        System.out.println(onObstacle);
+
+                    } else if (levelManager.getObstacles()[onObstacle] instanceof NME) {
+                        died = true;
+                        System.out.println(onObstacle);
+                    } else if (levelManager.getObstacles()[onObstacle] instanceof Pencil) {
+                        Gamestate.state = Gamestate.LEVELCOMPLETE;
+                    }
+                }
+            }
+        }
+
+
+
+
+        movingX = false;
+        float xSpeed = 0;
+
+        if (!left && !right && !up && !inAirTest && onButton == -1 && gateClosed) {
+            return;
+        }
+        System.out.println("active");
+
+
+
+        if (left)
+            xSpeed -= playerSpeed;
+        if (right)
+            xSpeed += playerSpeed;
+
+
+        if (up) {
+            if (!inAirTest) {
+                airSpeed = jumpSpeed;
+                inAirTest = true;
+            }
+        }
+
+
+        if (lvlDat != null) {
+            //
+            if (inAirTest) { //Checks if you are in the air, then moves down if true
+                hitbox.y += airSpeed;
+                y = hitbox.y;
+                airSpeed += gravity;
+                if (right || left)
+                    updateXPos(xSpeed);
+
+
+                inAirTest = CanMoveHere(hitbox.x, hitbox.y + airSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
+                //Sticky ceiling fix
+                if (!inAirTest) {
+                    if (CanMoveHere(hitbox.x, hitbox.y + 5, (int) hitbox.width, (int) hitbox.height, lvlDat)) {
+                        inAirTest = true;
+                        airSpeed = 0;
+                        hitbox.y += 1;
+                        y = hitbox.y;
+                    }
+                }
+
+
+
+            } else { //If not in air, reset gravity
+                airSpeed = 0;
+                if (right || left) {
+                    updateXPos(xSpeed);
+                    inAirTest = CanMoveHere(hitbox.x, hitbox.y + airSpeed, (int) hitbox.width, (int) hitbox.height, lvlDat);
+                    if (!inAirTest) {
+                        if (CanMoveHere(hitbox.x, hitbox.y + 5, (int) hitbox.width, (int) hitbox.height, lvlDat)) {
+                            inAirTest = true;
+                            airSpeed = 0;
+                            hitbox.y += 1;
+                            y = hitbox.y;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        //Button Logic
+        if (levelManager.getButtons() != null) {
+            onButton = CanMoveHereObject(hitbox.x, hitbox.y + 10, (int) hitbox.width, (int) hitbox.height, levelManager.getButtons()); //Checks if button is being pressed
+            int GateStartingIndex = levelManager.getLvlData().length - levelManager.getButtons().length * 2; //gets the gate starting index from lvlDat
+            if (onButton > -1) { // If you are on ANY button,
+                if (levelManager.getLvlData()[GateStartingIndex + onButton].height != 10) { //if gate is not completely closed
+
+                    levelManager.getLvlData()[GateStartingIndex + onButton].height -= 2; //move level object
+
+
+                    if (!buttonPressedState) { //If the button is not pressed, press
+                        levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + onButton].y += (int) (20 * Game.SCALE);
+                        levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + onButton].height = Game.PRESSED_BUTTON_HEIGHT;
+                        levelManager.getButtons()[onButton].y = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + onButton].y;
+                        levelManager.getButtons()[onButton].height = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + onButton].height;
+                        tempOnButton = onButton;
+                        buttonPressedState = true;
+
+                    }
+                    gateClosed = false;
+
+                }
+            } else { // if not on button
+                if (!gateClosed) { //if gate isn't closed completely
+                    boolean gateMoved = false;
+                for (int i = 0; i < levelManager.getButtons().length; i++) { // If not on the button, close the gate
+                    if (levelManager.getLvlData()[GateStartingIndex + i].height != Game.BLOCK_SIZE*2) {
+                        levelManager.getLvlData()[GateStartingIndex + onButton + 1 + i].height++;
+                        gateMoved = true;
+                    }
+                }
+                    gateClosed = !gateMoved;
+//                    System.out.println(gateMoved);
+                }
+                if (buttonPressedState && !inAirTest) { //If button is not being pressed, release
+                    levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].y -= (int) (20 * Game.SCALE);
+                    levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].height = Game.BUTTON_HEIGHT;
+                    levelManager.getButtons()[tempOnButton].y = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].y;
+                    levelManager.getButtons()[tempOnButton].height = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].height;
+                    buttonPressedState = false;
+                }
+
+            }
+        }
+
+    }
+
+    private void updateXPos(float xSpeed) { //Horizontal movement logic
         Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
         if (CanMoveHere(hitbox.x + xSpeed, hitbox.y, (int) hitbox.width, (int) hitbox.height, lvlDat)) {
             hitbox.x += xSpeed;
