@@ -8,10 +8,10 @@ import java.awt.image.BufferedImage;
 import static utilz.Constants.UI.B_HEIGHT_DEFAULT;
 import static utilz.Constants.UI.B_WIDTH_DEFAULT;
 
-public class CompleteButtons extends Buttons{
+public class CompleteButton extends Buttons{
     private BufferedImage[] imgs;
 
-    public CompleteButtons(int xPos, int yPos, int rowIndex, Gamestate state) {
+    public CompleteButton(int xPos, int yPos, int rowIndex, Gamestate state) {
         super(xPos, yPos, rowIndex, state);
         loadImages();
     }

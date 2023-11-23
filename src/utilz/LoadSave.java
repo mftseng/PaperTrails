@@ -1,14 +1,10 @@
 package utilz;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-
-import main.Game;
 
 public class LoadSave {
 
@@ -19,7 +15,7 @@ public class LoadSave {
     public static final String MENU_TITLE = "menuTitle.png";
     public static final String BINDER_PAPER = "binder_paper2.png";
     public static final String ENEMIES_ATLAS = "Eraser_and_P1_Idle&Walk.png";
-    public static final String COMPLETE_TITLE = " LevelCompleteScreen.png";
+    public static final String COMPLETE_TITLE = "LevelCompleteScreen.png";
     public static final String GRADES = "Grades.png";
     public static final String PAUSEBUTTONS = "pausebuttons.png";
 
