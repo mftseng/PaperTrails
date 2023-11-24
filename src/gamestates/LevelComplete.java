@@ -25,6 +25,9 @@ public class LevelComplete extends State implements Statemethods{
     public LevelComplete(Game game) {
         super(game);
         loadButtons();
+        for (CompleteButton button : buttons){
+            System.out.print(button.getBounds());
+        }
         loadBackground();
         score_to_grade = Map.ofEntries(entry(3,0), entry(2,1), entry(1,2), entry(0,3));
     }
@@ -136,6 +139,7 @@ public class LevelComplete extends State implements Statemethods{
 
         for (CompleteButton completeButton : buttons){
             if (isIn(e, completeButton)){
+                System.out.println(isIn(e, completeButton));
                 completeButton.setMouseOver(true);
                 break;
             }

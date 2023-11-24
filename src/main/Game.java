@@ -99,7 +99,7 @@ public class Game implements Runnable{
                 menu.draw(g);
                 break;
             case PLAYING:
-            g.drawImage(background, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+                g.drawImage(background, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
                 playing.draw(g);
                 break;
             case QUIT:
@@ -183,6 +183,8 @@ public class Game implements Runnable{
     public Playing getPlaying(){
         return playing;
     }
+
+    public LevelComplete getLevelComplete(){return levelComplete;}
 
 
 

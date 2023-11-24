@@ -3,10 +3,10 @@ package ui;
 import gamestates.Gamestate;
 import utilz.LoadSave;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static utilz.Constants.UI.B_HEIGHT_DEFAULT;
-import static utilz.Constants.UI.B_WIDTH_DEFAULT;
+import static utilz.Constants.UI.*;
 
 public class CompleteButton extends Buttons{
     private BufferedImage[] imgs;
@@ -17,9 +17,7 @@ public class CompleteButton extends Buttons{
     }
 
 
-//    private void initBounds() {
-//        bounds = new Rectangle(xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT);
-//    }
+
 
 
     private void loadImages() {
