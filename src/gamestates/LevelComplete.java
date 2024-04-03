@@ -1,6 +1,7 @@
 package gamestates;
 
 import entities.Player;
+import levels.LevelManager;
 import main.Game;
 import ui.CompleteButton;
 import ui.MenuButton;
@@ -37,7 +38,7 @@ public class LevelComplete extends State implements Statemethods{
     }
 
     private void loadButtons() {
-        buttons[0] = new CompleteButton(Game.GAME_WIDTH/2, (int) (315*Game.SCALE), 0, Gamestate.PLAYING);
+        buttons[0] = new CompleteButton(Game.GAME_WIDTH/2, (int) (315*Game.SCALE), 0, Gamestate.NEXT);
         buttons[1] = new CompleteButton(Game.GAME_WIDTH/2, (int) (435*Game.SCALE), 1, Gamestate.OPTIONS);
         buttons[2] = new CompleteButton(Game.GAME_WIDTH/2, (int) (550*Game.SCALE), 2, Gamestate.QUIT);
     }
@@ -116,6 +117,10 @@ public class LevelComplete extends State implements Statemethods{
         for (CompleteButton completeButton : buttons){
             if(isIn(e, completeButton)){
                 if(completeButton.isMousePressed()){
+                    if(completeButton.getState() == Gamestate.NEXT){
+                        LevelManager.updateLevel();
+                        completeButton.setState(Gamestate.PLAYING);
+                    }
                     completeButton.applyGamestate();
                     break;
                 }

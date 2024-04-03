@@ -92,6 +92,14 @@ public abstract class Buttons {
         this.imgs = imgs;
 
     }
+
+    public Gamestate getState(){
+        return this.state;
+    }
+
+    public void setState(Gamestate state){
+        this.state = state;
+    }
 }
 
 

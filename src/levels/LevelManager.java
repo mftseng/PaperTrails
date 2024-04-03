@@ -1,3 +1,4 @@
+/* Defines functions for creating and changing levels */
 package levels;
 
 import java.awt.*;
@@ -25,12 +26,12 @@ public class LevelManager {
     private static Eraser[] enemies;
     Font gemCounterFont;
     private int gemCounter = 0;
-    private int level;
+    private static int level = 6;
 
 
 
 
-
+    /* LevelManager: creates a new LevelManager object with level set to 1. */
     public LevelManager(Game game) {
         this.game = game;
         loadAnimations();
@@ -43,28 +44,24 @@ public class LevelManager {
     public void update() {
 
     }
-    public void nextLevel(){
-        level ++;
-    }
 
-    public int getLevelNum(){
-        return levelNum;
-    }
+    /* getters: */
+    public int getLevelNum(){return levelNum;}
     public boolean getisThereButtons(){return isThereButtons;}
     public Rectangle[] getLvlData(){return lvlDat;}
     public Rectangle[] getButtons(){return buttons;}
     public Obstacle[] getObstacles(){return obstacles;}
-    public Eraser[] getEnemies() {
-        return enemies;
-    }
+    public Eraser[] getEnemies() {return enemies;}
     public boolean getAreThereObstacles(){return (obstacles.length > 0);}
+    public boolean getLevelCreated(){return LevelCreated;}
 
-
-    public void updateLevel(){
-
+    /* updateLevel: changes to next level by incrementing. */
+    public static void updateLevel(){
+        level++;
     }
 
 
+    /* render: draws elements of current level onto screen. */
     public void render(Graphics g) {
         createLevel(g);
         drawLevel(g);
@@ -75,7 +72,9 @@ public class LevelManager {
 //        System.out.println(obstacles.length);
     }
 
+    /* level creation functions: */
     public void createLevel1(Graphics g){
+        System.out.println(level);
         lvlDat = new Rectangle[1];
         lvlDat[0] = new Rectangle(0, Game.GAME_HEIGHT/2 + Game.BLOCK_SIZE*2,Game.GAME_WIDTH,Game.GAME_HEIGHT/2);
 
@@ -315,7 +314,7 @@ public class LevelManager {
 
 
 
-
+    /* drawLevel: draws level platforms and buttons. */
     public void drawLevel(Graphics g){
         //print function
 //        System.out.println(isThereButtons);
@@ -333,10 +332,10 @@ public class LevelManager {
 
 
 
-
+    /* createLevel: uses level variable to call on corresponding level creation method. */
     public void createLevel(Graphics g){
 //
-        switch(1){
+        switch(4){
             case 1:
                 if(!LevelCreated){
                     createLevel1(g);
@@ -421,16 +420,16 @@ public class LevelManager {
         LevelCreated = true;
     }
 
-
+    /* loadAnimations: loads obstacle objects into animations array. */
     public void loadAnimations() {
         BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.TITLE_ATLAS);
         animations = new BufferedImage[3];
         animations[0] = img.getSubimage( 0, 166, 175, 53);
         animations[1] = img.getSubimage( 175, 166, 195, 53);
         animations[2] = img.getSubimage(370, 166, 210, 53);
-
-
     }
+
+    /* updateAnimationTick: animates by cycling through image panels. */
     private void updateAnimationTick() {
         aniTick++;
         if (aniTick >= aniSpeed) {
@@ -442,10 +441,6 @@ public class LevelManager {
         }
     }
 
-
-    public boolean getLevelCreated(){
-        return LevelCreated;
-    }
 
 
 }
