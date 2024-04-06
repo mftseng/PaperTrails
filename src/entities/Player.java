@@ -1,3 +1,4 @@
+/* Describes functions for user-controlled entity */
 package entities;
 
 import gamestates.Gamestate;
@@ -62,7 +63,7 @@ public class Player extends MovingEntities {
 
     }
 
-
+    /* update: updates animation and position of player. If player is dead, plays death animation then marks entity as dead. */
     public void update() {
         if (playerstate == Playerstate.ACTIVE) {
 //            updatePos();
@@ -86,6 +87,7 @@ public class Player extends MovingEntities {
         }
     }
 
+    /* die: changes playerstate to DYING. */
     public void die() {
         if (playerstate == Playerstate.ACTIVE) {
             playerstate = Playerstate.DYING;
@@ -95,7 +97,7 @@ public class Player extends MovingEntities {
 
 
 
-
+    /* render: draws player entity onto screen. */
     public void render(Graphics g) {
         boolean isFacingLeft = (left && !right);
         boolean isFacingRight = (right && !left);
@@ -119,13 +121,7 @@ public class Player extends MovingEntities {
         drawHitbox(g);
     }
 
-
-
-    public void setDirection(int direction) {
-
-    }
-
-
+    /* loadAnimations: loads player panels into animations array for future rendering. */
     public void loadAnimations() {
         BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
         animations = new BufferedImage[9][7];
@@ -141,6 +137,7 @@ public class Player extends MovingEntities {
 
     }
 
+    /* updateAnimationTick: changes panel to support player animation. */
     private void updateAnimationTick() {
         aniTick++;
         if (aniTick >= aniSpeed) {
@@ -156,6 +153,7 @@ public class Player extends MovingEntities {
     }
 
 
+    /* setAnimation: sets corresponding animation panel depending on playerNum variable. */
     private void setAnimation() {
         if(movingX) {
             if (playerNum == 1) {
@@ -185,51 +183,12 @@ public class Player extends MovingEntities {
             playerAction = IDLE2;
     }
 
+    /* resetDirBooleans: resets all directions to false. */
     public void resetDirBooleans() {
         left = false;
         right = false;
         up = false;
         down = false;
-    }
-
-    public int getAniTick() {
-        return aniTick;
-    }
-
-    public void setAniTick(int aniTick) {
-        this.aniTick = aniTick;
-    }
-
-    public boolean isLeft() {
-        return left;
-    }
-
-    public void setLeft(boolean left) {
-        this.left = left;
-    }
-
-    public boolean isRight() {
-        return right;
-    }
-
-    public void setRight(boolean right) {
-        this.right = right;
-    }
-
-    public boolean isUp() {
-        return up;
-    }
-
-    public void setUp(boolean up) {
-        this.up = up;
-    }
-
-    public boolean isDown() {
-        return down;
-    }
-
-    public void setDown(boolean down) {
-        this.down = down;
     }
 
     private void updatePos() {
@@ -353,6 +312,7 @@ public class Player extends MovingEntities {
 
     }
 
+    /*updatePosTest: handles movement of entity including gravity, button, and obstacle logic. */
     private void updatePosTest() {
         Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
 
@@ -496,6 +456,7 @@ public class Player extends MovingEntities {
 
     }
 
+    /* updateXPos: updates horizontal movement logic. */
     private void updateXPos(float xSpeed) { //Horizontal movement logic
         Rectangle[] lvlDat = levelManager.getLvlData(); // Access the lvlDat array
         if (CanMoveHere(hitbox.x + xSpeed, hitbox.y, (int) hitbox.width, (int) hitbox.height, lvlDat)) {
@@ -505,20 +466,7 @@ public class Player extends MovingEntities {
         }
     }
 
-
-
-    public void setPlayerAction(int newAction){this.playerAction = newAction;}
-
-    public int getOnObstacle(){return onObstacle;}
-
-    public boolean isDead(){
-        return died;
-    }
-
-    public static int getGemCounter(){
-        return gemCounter;
-    }
-
+    /* flipImage: horizontally flips animation panel. */
     private BufferedImage flipImage(BufferedImage image) {
         if (image != null) {
             BufferedImage flippedImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -535,6 +483,38 @@ public class Player extends MovingEntities {
             return flippedImage;
         }
         return image;
+    }
+
+    /* getters and setters: */
+    public boolean isDead(){
+        return died;
+    }
+
+    public static int getGemCounter(){
+        return gemCounter;
+    }
+    public int getAniTick() {
+        return aniTick;
+    }
+
+    public void setAniTick(int aniTick) {
+        this.aniTick = aniTick;
+    }
+
+    public void setLeft(boolean left) {
+        this.left = left;
+    }
+
+    public void setRight(boolean right) {
+        this.right = right;
+    }
+
+    public void setUp(boolean up) {
+        this.up = up;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
     }
 
 
