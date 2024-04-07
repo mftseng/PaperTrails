@@ -3,6 +3,7 @@ package levels;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import entities.*;
 import main.Game;
@@ -27,6 +28,8 @@ public class LevelManager {
     Font gemCounterFont;
     private int gemCounter = 0;
     private static int level = 6;
+    private boolean flag = false;
+    private int buttonCount;
 
 
 
@@ -123,6 +126,11 @@ public class LevelManager {
     }
 
     public void createLevel4(){
+        ArrayList<Game_Button> GameButton = new ArrayList<Game_Button>();
+        GameButton.add(new Game_Button(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT));
+        GameButton.add(new Game_Button(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT));
+        buttonCount = GameButton.size();
+
         isThereButtons = true;
         lvlDat = new Rectangle[24];
         //Line1
@@ -164,14 +172,15 @@ public class LevelManager {
         lvlDat[21] = new Rectangle(0, Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.SPACE_BETWEEN_LINES*3, Game.BLOCK_SIZE*2, Game.BLOCK_SIZE*3 + Game.LINE_SIZE*2);
 
         //button for Moving Gate 1
-        lvlDat[22] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+//        lvlDat[22] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+        lvlDat[22] = GameButton.get(0).makeRectangle();
         //button for Moving Gate 2
-        lvlDat[23] = new Rectangle(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
-
+//        lvlDat[23] = new Rectangle(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+        lvlDat[23] = GameButton.get(1).makeRectangle();
         //buttons
-        buttons = new Rectangle[2];
-        buttons[0] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
-        buttons[1] = new Rectangle(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+//        buttons = new Rectangle[2];
+//        buttons[0] = new Rectangle(Game.BLOCK_SIZE*9,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*2 - Game.BUTTON_HEIGHT,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
+//        buttons[1] = new Rectangle(Game.BLOCK_SIZE*6,Game.FLOOR_HEIGHT - Game.BLOCK_SIZE*4 - Game.BUTTON_HEIGHT- Game.LINE_SIZE*2,Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
 
 
         LevelCreated = true;
@@ -305,9 +314,6 @@ public class LevelManager {
         buttons[5] = new Rectangle(Game.GAME_WIDTH/2, Game.GAME_HEIGHT - Game.SPACE_BETWEEN_LINES*2 - Game.BUTTON_HEIGHT, Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
 
 
-
-
-
         LevelCreated = true;
     }
 
@@ -318,17 +324,23 @@ public class LevelManager {
     public void drawLevel(Graphics g){
         //print function
 //        System.out.println(isThereButtons);
-        for (int i = 0; i < lvlDat.length; i++) {
+        for (int i = 0; i < lvlDat.length-(buttonCount); i++) {
             g.fillRect(lvlDat[i].x, lvlDat[i].y, lvlDat[i].width, lvlDat[i].height);
+
         }
-        if (isThereButtons){
-            for (int j = 0; j < buttons.length; j++){
+        for (int i = lvlDat.length-(buttonCount); i < lvlDat.length; i++) {
             g.setColor(Color.PINK);
-            g.fillRect(buttons[j].x, buttons[j].y, buttons[j].width, buttons[j].height);
+            g.fillRect(lvlDat[i].x, lvlDat[i].y, lvlDat[i].width, lvlDat[i].height);
+
         }
+//        if (isThereButtons){
+//            for (int j = 0; j < buttons.length; j++){
+//            g.setColor(Color.PINK);
+//            g.fillRect(buttons[j].x, buttons[j].y, buttons[j].width, buttons[j].height);
+//        }
 
     }
-    }
+
 
 
 
@@ -409,13 +421,6 @@ public class LevelManager {
 
         buttons = new Rectangle[1];
         buttons[0] = new Rectangle(300, Game.GAME_HEIGHT/2 + Game.BLOCK_SIZE*2- Game.BUTTON_HEIGHT, Game.BUTTON_WIDTH, Game.BUTTON_HEIGHT);
-
-
-
-
-
-
-
 
         LevelCreated = true;
     }

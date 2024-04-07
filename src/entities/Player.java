@@ -447,7 +447,7 @@ public class Player extends MovingEntities {
                     levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].y -= (int) (20 * Game.SCALE);
                     levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].height = Game.BUTTON_HEIGHT;
                     levelManager.getButtons()[tempOnButton].y = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].y;
-                    levelManager.getButtons()[tempOnButton].height = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].height;
+//                    levelManager.getButtons()[tempOnButton].height = levelManager.getLvlData()[GateStartingIndex + levelManager.getButtons().length + tempOnButton].height;
                     buttonPressedState = false;
                 }
 

@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static utilz.HelpMethods.*;
-
+/* functions for while game is being played */
 public class Playing extends State implements Statemethods {
     private Player player1;
     private Player player2;
@@ -43,6 +43,7 @@ public class Playing extends State implements Statemethods {
 
     }
 
+
     public void windowFocusLost() {
         player1.resetDirBooleans();
         player2.resetDirBooleans();
@@ -58,6 +59,7 @@ public class Playing extends State implements Statemethods {
             PlayerCollision = true;
     }
 
+    /* update: updates game if level has not been completed or not game over. Checks if player died. */
     @Override
     public void update() {
         if (Gamestate.state != Gamestate.LEVELCOMPLETE || Gamestate.state != Gamestate.GAMEOVER) {
